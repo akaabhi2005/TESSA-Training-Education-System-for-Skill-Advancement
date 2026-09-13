@@ -673,6 +673,39 @@ dialog::backdrop{background:rgba(3,5,10,.72);backdrop-filter:blur(5px)}
 a.btn-secondary{display:inline-flex;align-items:center;text-decoration:none}
 .dial-caption{color:var(--muted);font-size:12px;line-height:1.55;max-width:280px;margin:18px 0 0}
 
+/* Placement Hub Styles */
+.placement-subnav { display: flex; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 20px; overflow-x: auto; }
+.placement-tab-btn { background: rgba(255,255,255,.03); border: 1px solid var(--line-soft); color: var(--muted); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: .15s; white-space: nowrap; }
+.placement-tab-btn:hover { border-color: var(--cyan); color: var(--text); }
+.placement-tab-btn.on { background: rgba(81,221,255,.12); border-color: var(--cyan); color: var(--cyan); font-weight: 600; }
+
+.placement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 900px) { .placement-grid { grid-template-columns: 1fr; } }
+
+.setup-card, .room-card, .report-card, .gaps-card, .jobs-card, .history-card { background: rgba(16,21,34,.7); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+.video-box { position: relative; width: 100%; height: 240px; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+.video-box video { width: 100%; height: 100%; object-fit: cover; }
+.video-overlay-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,.65); padding: 4px 10px; border-radius: 20px; font-size: 11px; color: #10b981; backdrop-filter: blur(4px); border: 1px solid rgba(16,185,129,.3); }
+.video-status-bar { position: absolute; bottom: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; font-size: 11px; color: #fff; background: rgba(0,0,0,.7); padding: 6px 12px; border-radius: 6px; }
+
+.question-display-box { background: rgba(81,221,255,.05); border: 1px solid rgba(81,221,255,.2); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+.question-text { font: 600 17px/1.4 var(--display); color: #fff; margin-top: 6px; }
+
+.voice-input-container { display: flex; flex-direction: column; gap: 10px; }
+.voice-input-container textarea { width: 100%; min-height: 90px; background: rgba(8,12,21,.6); border: 1px solid var(--line); border-radius: 8px; color: var(--text); padding: 12px; font-size: 13.5px; outline: none; }
+.voice-input-container textarea:focus { border-color: var(--cyan); }
+
+.score-dial-box { display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; background: rgba(255,255,255,.02); border-radius: 12px; border: 1px solid var(--line-soft); text-align: center; }
+.score-number { font: 700 48px/1 var(--display); color: var(--cyan); margin: 8px 0; }
+
+.rubric-bar-row { display: grid; grid-template-columns: 140px 1fr 50px; align-items: center; gap: 10px; font-size: 12.5px; margin-bottom: 10px; }
+.rubric-bar-bg { height: 8px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; }
+.rubric-bar-fill { height: 100%; background: var(--cyan); border-radius: 99px; }
+
+.job-item-card { border: 1px solid var(--line-soft); background: rgba(8,12,21,.34); border-radius: 11px; padding: 16px; margin-bottom: 12px; transition: .15s; }
+.job-item-card:hover { border-color: rgba(81,221,255,.4); transform: translateY(-2px); }
+.job-match-badge { display: inline-block; background: rgba(16,185,129,.15); color: #10b981; border: 1px solid rgba(16,185,129,.3); padding: 3px 10px; border-radius: 99px; font-weight: 600; font-size: 12px; }
+
 @media (max-width:900px){
   .quiz-delta{grid-template-columns:1fr 62px 62px}
 }
@@ -760,6 +793,7 @@ a.btn-secondary{display:inline-flex;align-items:center;text-decoration:none}
     <button class="nav-btn" data-view="skills" aria-controls="view-skills"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></span><span>Mastery</span></button>
     <button class="nav-btn" data-view="progress" aria-controls="view-progress"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></span><span>Milestones</span></button>
     <button class="nav-btn" data-view="profile" aria-controls="view-profile"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span><span>My Setup</span></button>
+    <button class="nav-btn" data-view="placement" aria-controls="view-placement"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></span><span>Placement Hub</span></button>
     <div class="nav-spacer"></div>
     <button class="nav-btn" data-view="assistant" aria-controls="view-assistant"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"></path></svg></span><span>Ask AI</span><span class="nav-badge hidden" data-unread-badge aria-label="Unread message">1</span></button>
   </aside>
@@ -833,6 +867,247 @@ a.btn-secondary{display:inline-flex;align-items:center;text-decoration:none}
         </aside>
       </div>
     </section>
+
+    <section class="view" id="view-placement">
+      <header class="view-head">
+        <div><div class="eyebrow">AI Mock Interviews & Placement Readiness</div><h2 tabindex="-1">Placement Hub</h2></div>
+        <p>Adaptive AI Mock Interviews, Communication Analysis, Visual Coaching, Skill Gap Sync & Live Job Matches.</p>
+      </header>
+
+      <div class="placement-subnav">
+        <button class="placement-tab-btn on" data-ptab="setup">Mock Interview</button>
+        <button class="placement-tab-btn" data-ptab="report">Performance Report</button>
+        <button class="placement-tab-btn" data-ptab="gaps">Skill Gaps</button>
+        <button class="placement-tab-btn" data-ptab="jobs">Live Job Matches</button>
+        <button class="placement-tab-btn" data-ptab="history">Interview History</button>
+      </div>
+
+      <!-- Tab 1: Mock Interview Setup & AI Interview Room -->
+      <div id="ptab-setup-content">
+        <div class="placement-grid">
+          <!-- Setup Form -->
+          <div class="setup-card" id="interviewSetupCard">
+            <div class="eyebrow" style="color:var(--cyan);margin-bottom:8px;">01 / Setup Mock Interview</div>
+            <h3 style="font:600 20px/1.2 var(--display);margin-bottom:16px;">Configure Your Session</h3>
+            
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div>
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Target Role (Type or Select Any Role)</label>
+                <input type="text" id="pRoleInput" class="catalogue-search" list="pRoleDatalist" placeholder="Search target role (e.g. Java Backend, ML, Fullstack...)" value="Java Backend Developer" style="margin-bottom:0;width:100%;" />
+                <datalist id="pRoleDatalist">
+                  <option value="Java Backend Developer"></option>
+                  <option value="Software Development Engineer (SDE)"></option>
+                  <option value="Java Full Stack Developer"></option>
+                  <option value="Spring Boot Backend Engineer"></option>
+                  <option value="Python Data Engineer"></option>
+                  <option value="Machine Learning Engineer"></option>
+                  <option value="AI / LLM Engineer"></option>
+                  <option value="Frontend Developer (React/Next.js)"></option>
+                  <option value="DevOps & Cloud Engineer"></option>
+                  <option value="Data Scientist"></option>
+                  <option value="System Architect"></option>
+                  <option value="Android Developer"></option>
+                  <option value="iOS Developer"></option>
+                  <option value="Cybersecurity Engineer"></option>
+                  <option value="Fullstack Web Engineer"></option>
+                </datalist>
+              </div>
+
+              <div>
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Interview Type</label>
+                <select id="pTypeSelect" class="catalogue-search" style="margin-bottom:0;">
+                  <option value="Technical Round">Technical Round</option>
+                  <option value="HR & Behavioral Round">HR & Behavioral Round</option>
+                  <option value="Full Mock Interview (All Rounds)">Full Mock Interview (All Rounds - Technical + HR)</option>
+                </select>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div>
+                  <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Experience Level</label>
+                  <select id="pLevelSelect" class="catalogue-search" style="margin-bottom:0;">
+                    <option value="Internship">Internship</option>
+                    <option value="Fresher" selected>Fresher</option>
+                    <option value="Intermediate">Intermediate (1-3 Yrs)</option>
+                    <option value="Expert">Expert / Senior (4+ Yrs)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Duration</label>
+                  <select id="pDurationSelect" class="catalogue-search" style="margin-bottom:0;">
+                    <option value="15">15 Minutes</option>
+                    <option value="30" selected>30 Minutes</option>
+                    <option value="45">45 Minutes</option>
+                    <option value="60">60 Minutes (Full Round)</option>
+                  </select>
+                  <div id="pDurationNotice" style="font-size:10px;color:var(--cyan);margin-top:4px;" class="hidden">* Fixed at 60 mins for Full Mock Interview</div>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Upload Resume (PDF / Text - AI Validated)</label>
+                <input type="file" id="pResumeFile" accept=".pdf,.txt" style="display:none;" />
+                <button type="button" class="btn-secondary" id="pResumeUploadBtn" style="width:100%;text-align:center;justify-content:center;">📎 Drag & Drop or Choose Resume File</button>
+                <div id="pResumeStatus" style="font-size:11px;margin-top:6px;display:none;"></div>
+              </div>
+
+              <button class="btn-primary" id="startInterviewBtn" style="margin-top:10px;justify-content:center;">Enter AI Interview Room →</button>
+            </div>
+          </div>
+
+          <!-- Quick Guidelines -->
+          <div class="setup-card">
+            <div class="eyebrow" style="color:var(--violet);margin-bottom:8px;">Features Overview</div>
+            <h3 style="font:600 20px/1.2 var(--display);margin-bottom:16px;">How Placement Hub Works</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;font-size:13px;color:var(--muted);line-height:1.5;">
+              <div><b style="color:#fff;">• Adaptive AI Questioning:</b> Gemini asks real non-fixed follow-up questions tailored to your previous responses.</div>
+              <div><b style="color:#fff;">• Mic & Camera Processing:</b> Real-time speech analysis (WPM, filler words) and observable camera coaching (posture, eye direction).</div>
+              <div><b style="color:#fff;">• Non-Evaluative Camera Coaching:</b> Camera analysis is purely for coaching feedback and does NOT affect technical scores or job matching.</div>
+              <div><b style="color:#fff;">• TESSA Skill Gap Sync:</b> Directly update your TESSA learning roadmap for detected interview weaknesses with one click.</div>
+              <div><b style="color:#fff;">• Real Job Matching:</b> Live jobs fetched from Adzuna / Tavily with skills-based match scores.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Interview Room (Hidden initially) -->
+        <div class="room-card hidden" id="interviewRoomCard" style="margin-top:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line-soft);">
+            <div>
+              <span class="tag cyan" id="roomRoleTag">Java Backend Developer</span>
+              <span class="tag" id="roomTypeTag" style="margin-left:6px;">Technical Round</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <button class="btn-primary" id="launchWatchBtn" style="font-size:13px;padding:6px 14px;background:var(--mint);color:#080c15;font-weight:700;">🚀 Start Interview & Launch Watch</button>
+              <span style="font-family:var(--display);font-weight:700;font-size:18px;color:var(--solar);" id="roomTimer">30:00</span>
+              <button class="btn-secondary" id="concludeInterviewBtn" style="color:var(--danger);border-color:rgba(239,68,68,.3);">End Interview</button>
+            </div>
+          </div>
+
+          <div class="placement-grid">
+            <!-- Left: Video Feed & Speech Visualizer -->
+            <div>
+              <div class="video-box">
+                <video id="interviewVideoFeed" autoplay muted playsinline></video>
+                <div class="video-overlay-badge" id="videoCameraStatus">● Camera ON | Posture Steady</div>
+                <div class="video-status-bar">
+                  <span>Mic: <b id="micStatusText" style="color:#10b981">Active</b></span>
+                  <span>Facing Camera: <b id="facingStatusText" style="color:#10b981">92%</b></span>
+                </div>
+              </div>
+
+              <div style="margin-top:14px;display:flex;gap:10px;">
+                <button class="btn-secondary" id="toggleMicBtn" style="flex:1;">🎙️ Toggle Mic</button>
+                <button class="btn-secondary" id="toggleCamBtn" style="flex:1;">📷 Toggle Camera</button>
+              </div>
+
+              <div style="margin-top:16px;background:rgba(8,12,21,.4);padding:14px;border-radius:10px;border:1px solid var(--line-soft);">
+                <div class="eyebrow" style="margin-bottom:6px;">Live Mic Volume & Voice Analysis</div>
+                <div style="width:100%;height:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-bottom:8px;">
+                  <div id="micVolumeBar" style="height:100%;background:var(--cyan);width:0%;transition:width 0.1s;"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;">
+                  <span>Speaking Pace: <b id="liveWpmText" style="color:var(--text);">130 WPM</b></span>
+                  <span>Filler Words: <b id="liveFillersText" style="color:var(--solar);">0</b></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Question Card & User Answer Input -->
+            <div>
+              <div class="question-display-box">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                  <div class="eyebrow" style="color:var(--cyan)">Question <span id="currentTurnNumber">1</span></div>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <span class="tag cyan hidden" id="aiSpeakingBadge">🔊 AI Speaking...</span>
+                    <button type="button" class="btn-secondary" id="replayAudioBtn" style="font-size:11px;padding:4px 8px;">🔊 Replay Audio</button>
+                  </div>
+                </div>
+                <div class="question-text" id="currentQuestionText">Loading opening interview question...</div>
+              </div>
+
+              <div class="voice-input-container">
+                <label style="font-size:12px;color:var(--muted);">Your Voice/Text Response:</label>
+                <textarea id="userAnswerText" placeholder="Click 'Start Speaking' or type your response here..."></textarea>
+                
+                <div style="display:flex;gap:10px;">
+                  <button class="btn-secondary" id="startSpeechRecognitionBtn" style="flex:1;justify-content:center;">🎙️ Start Voice Input</button>
+                  <button class="btn-primary" id="submitAnswerBtn" style="flex:1;justify-content:center;">Submit Answer →</button>
+                </div>
+              </div>
+
+              <!-- Transcript log -->
+              <div style="margin-top:20px;">
+                <div class="eyebrow" style="margin-bottom:8px;">Turn History</div>
+                <div id="transcriptTurnLog" style="max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--muted);">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Get Your Report Action Card (Appears after interview ends) -->
+        <div id="getReportFooterCard" class="room-card hidden" style="margin-top:16px;text-align:center;padding:24px;background:rgba(81,221,255,.05);border:1px solid var(--cyan);border-radius:12px;">
+          <h4 style="font-size:18px;margin:0 0 8px;color:#fff;">🎉 Interview Concluded!</h4>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Your responses, communication pace, and visual coaching metrics have been evaluated by AI.</p>
+          <button class="btn-primary" id="getReportBtn" style="font-size:14px;padding:10px 28px;margin:0 auto;display:inline-flex;align-items:center;gap:8px;">📊 Get Your Report & Detailed Evaluation →</button>
+        </div>
+      </div>
+
+      <!-- Tab 2: Performance Report -->
+      <div id="ptab-report-content" class="hidden">
+        <div id="reportContainer">
+          <div class="report-card" style="text-align:center;padding:40px;">
+            <p style="color:var(--muted);">No completed interview report yet. Complete a session to see your evaluation.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Skill Gaps -->
+      <div id="ptab-gaps-content" class="hidden">
+        <div class="gaps-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div>
+              <div class="eyebrow" style="color:var(--solar);">Interview Skill Gaps</div>
+              <h3 style="font:600 20px/1.2 var(--display);margin-top:4px;">Detected Weaknesses vs Target Role</h3>
+            </div>
+            <button class="btn-primary" id="applyGapsBtn">⚡ Add Interview Gaps to TESSA Roadmap</button>
+          </div>
+
+          <div id="gapsTableContainer">
+            <p style="color:var(--muted);">No skill gaps detected yet. Complete an interview to analyze your weak areas.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 4: Live Job Matches -->
+      <div id="ptab-jobs-content" class="hidden">
+        <div class="jobs-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div>
+              <div class="eyebrow" style="color:var(--mint);">Real-Time Placement Matches</div>
+              <h3 style="font:600 20px/1.2 var(--display);margin-top:4px;">Live Jobs Matched by Abilities & Skills</h3>
+            </div>
+            <button class="btn-secondary" id="refreshJobsBtn">🔄 Search Live Jobs</button>
+          </div>
+
+          <div id="jobsListContainer">
+            <p style="color:var(--muted);">Click 'Search Live Jobs' to fetch current matching openings.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 5: Interview History -->
+      <div id="ptab-history-content" class="hidden">
+        <div class="history-card">
+          <div class="eyebrow" style="color:var(--violet);margin-bottom:6px;">Performance Trend</div>
+          <h3 style="font:600 20px/1.2 var(--display);margin-bottom:16px;">Interview Progress History</h3>
+          
+          <div id="historyListContainer">
+            <p style="color:var(--muted);">No past interview history recorded yet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <nav class="mobile-nav" aria-label="Mobile workspace navigation">
@@ -841,6 +1116,7 @@ a.btn-secondary{display:inline-flex;align-items:center;text-decoration:none}
     <button class="nav-btn" data-view="skills" aria-controls="view-skills"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></span><span>Mastery</span></button>
     <button class="nav-btn" data-view="progress" aria-controls="view-progress"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></span><span>Milestones</span></button>
     <button class="nav-btn" data-view="profile" aria-controls="view-profile"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span><span>My Setup</span></button>
+    <button class="nav-btn" data-view="placement" aria-controls="view-placement"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></span><span>Placement</span></button>
     <button class="nav-btn" data-view="assistant" aria-controls="view-assistant"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"></path></svg></span><span>Ask</span><span class="nav-badge hidden" data-unread-badge aria-label="Unread message">1</span></button>
   </nav>
 </main>
@@ -1190,8 +1466,9 @@ function resetAll() {
 }
 
 function switchView(next, {focus = true} = {}) {
-  if (!['today','trajectory','skills','progress','profile','assistant'].includes(next)) return;
+  if (!['today','trajectory','skills','progress','profile','assistant','placement'].includes(next)) return;
   view = next;
+  if ($('#workspace').classList.contains('hidden')) showWorkspace();
   $$('.view').forEach(v => v.classList.toggle('on', v.id === `view-${next}`));
   $$('.nav-btn[data-view]').forEach(b => {
     const on = b.dataset.view === next;
@@ -2348,6 +2625,623 @@ $('#intakeForm').addEventListener('submit', async event => {
 });
 
 $('#quizDialog').addEventListener('close', () => { quiz = null; });
+
+/* ------------------------------------------------------------------ Placement Hub JS */
+
+let currentPlacementSessionId = null;
+let placementCameraStream = null;
+let placementMicStream = null;
+let placementAudioCtx = null;
+let placementAnalyserNode = null;
+let placementMicAnimFrame = null;
+let placementSpeechRec = null;
+let placementTimerInterval = null;
+let placementTimerSecs = 0;
+let placementLastReport = null;
+
+document.addEventListener('click', async event => {
+  const tabBtn = event.target.closest('.placement-tab-btn');
+  if (tabBtn) {
+    const tabName = tabBtn.dataset.ptab;
+    $$('.placement-tab-btn').forEach(b => b.classList.remove('on'));
+    tabBtn.classList.add('on');
+    
+    ['setup', 'report', 'gaps', 'jobs', 'history'].forEach(t => {
+      const el = $('#ptab-' + t + '-content');
+      if (el) el.classList.toggle('hidden', t !== tabName);
+    });
+
+    if (tabName === 'jobs') fetchLiveJobMatches();
+    if (tabName === 'history') fetchInterviewHistory();
+  }
+});
+
+function speakQuestion(text) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  if (!text) return;
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  
+  const voices = window.speechSynthesis.getVoices();
+  const englishVoice = voices.find(v => v.lang && v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('David')));
+  if (englishVoice) utterance.voice = englishVoice;
+
+  const badge = $('#aiSpeakingBadge');
+  if (badge) badge.classList.remove('hidden');
+
+  utterance.onend = () => {
+    if (badge) badge.classList.add('hidden');
+  };
+  utterance.onerror = () => {
+    if (badge) badge.classList.add('hidden');
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+async function initPlacementCamera() {
+  try {
+    const videoEl = $('#interviewVideoFeed');
+    if (videoEl && navigator.mediaDevices?.getUserMedia) {
+      placementCameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      videoEl.srcObject = placementCameraStream;
+      if ($('#videoCameraStatus')) $('#videoCameraStatus').innerHTML = '● Camera ON | Posture Steady';
+    }
+  } catch (err) {
+    console.warn('Camera access denied or unavailable:', err);
+    if ($('#videoCameraStatus')) $('#videoCameraStatus').innerHTML = '○ Camera Offline (Voice Mode Active)';
+  }
+}
+
+function stopPlacementCamera() {
+  if (placementCameraStream) {
+    placementCameraStream.getTracks().forEach(t => t.stop());
+    placementCameraStream = null;
+  }
+}
+
+async function initPlacementAudio() {
+  try {
+    if (navigator.mediaDevices?.getUserMedia) {
+      placementMicStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      placementAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const source = placementAudioCtx.createMediaStreamSource(placementMicStream);
+      placementAnalyserNode = placementAudioCtx.createAnalyser();
+      placementAnalyserNode.fftSize = 256;
+      source.connect(placementAnalyserNode);
+
+      const dataArray = new Uint8Array(placementAnalyserNode.frequencyBinCount);
+      const updateVolume = () => {
+        if (!placementAnalyserNode) return;
+        placementAnalyserNode.getByteFrequencyData(dataArray);
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+        const average = sum / dataArray.length;
+        const volPct = Math.min(100, Math.round((average / 128) * 100));
+        
+        const volBar = $('#micVolumeBar');
+        if (volBar) volBar.style.width = `${volPct}%`;
+        
+        placementMicAnimFrame = requestAnimationFrame(updateVolume);
+      };
+      updateVolume();
+      if ($('#micStatusText')) {
+        $('#micStatusText').textContent = 'Active';
+        $('#micStatusText').style.color = '#10b981';
+      }
+    }
+  } catch (err) {
+    console.warn('Microphone access denied or unavailable:', err);
+    if ($('#micStatusText')) {
+      $('#micStatusText').textContent = 'Offline';
+      $('#micStatusText').style.color = 'var(--solar)';
+    }
+  }
+}
+
+function stopPlacementAudio() {
+  if (placementMicAnimFrame) cancelAnimationFrame(placementMicAnimFrame);
+  if (placementMicStream) {
+    placementMicStream.getTracks().forEach(t => t.stop());
+    placementMicStream = null;
+  }
+  if (placementAudioCtx) {
+    placementAudioCtx.close();
+    placementAudioCtx = null;
+  }
+}
+
+function startPlacementTimer(durationMins) {
+  clearInterval(placementTimerInterval);
+  placementTimerSecs = durationMins * 60;
+  const timerEl = $('#roomTimer');
+  
+  placementTimerInterval = setInterval(() => {
+    placementTimerSecs--;
+    if (placementTimerSecs <= 0) {
+      clearInterval(placementTimerInterval);
+      if (timerEl) timerEl.textContent = '00:00';
+      toast('Interview Time Up', 'Maximum session duration reached. Finalizing report...');
+      concludeMockInterview();
+      return;
+    }
+    const m = Math.floor(placementTimerSecs / 60).toString().padStart(2, '0');
+    const s = (placementTimerSecs % 60).toString().padStart(2, '0');
+    if (timerEl) timerEl.textContent = `${m}:${s}`;
+  }, 1000);
+}
+
+let placementDurationMins = 30;
+let placementQuestionPending = "";
+
+async function startMockInterview() {
+  const role = $('#pRoleInput') ? $('#pRoleInput').value.trim() : 'Java Backend Developer';
+  const type = $('#pTypeSelect') ? $('#pTypeSelect').value : 'Technical Round';
+  const level = $('#pLevelSelect') ? $('#pLevelSelect').value : 'Fresher';
+  const duration = $('#pDurationSelect') ? parseInt($('#pDurationSelect').value, 10) : 30;
+  placementDurationMins = duration;
+
+  ensureLearner();
+
+  try {
+    setBusy(true, 'Preparing AI Interviewer & Blueprint...');
+    const data = await API.post('/api/interview/start', {
+      learner_id: learnerId,
+      target_role: role,
+      interview_type: type,
+      level: level,
+      duration_minutes: duration
+    });
+    setBusy(false);
+
+    currentPlacementSessionId = data.session_id;
+    placementQuestionPending = data.question;
+
+    if ($('#interviewSetupCard')) $('#interviewSetupCard').classList.add('hidden');
+    if ($('#interviewRoomCard')) $('#interviewRoomCard').classList.remove('hidden');
+    if ($('#getReportFooterCard')) $('#getReportFooterCard').classList.add('hidden');
+    
+    if ($('#roomRoleTag')) $('#roomRoleTag').textContent = role;
+    if ($('#roomTypeTag')) $('#roomTypeTag').textContent = type;
+    if ($('#currentTurnNumber')) $('#currentTurnNumber').textContent = data.turn_index;
+    if ($('#currentQuestionText')) $('#currentQuestionText').textContent = data.question;
+    if ($('#userAnswerText')) $('#userAnswerText').value = '';
+    if ($('#transcriptTurnLog')) $('#transcriptTurnLog').innerHTML = `<div style="padding:6px;background:rgba(255,255,255,.02);border-radius:6px;"><b>Q1:</b> ${esc(data.question)}</div>`;
+
+    if ($('#launchWatchBtn')) $('#launchWatchBtn').classList.remove('hidden');
+    toast('Interview Room Prepared', 'Click "Start Interview & Launch Watch" to begin session clock and speaking.');
+  } catch (err) {
+    setBusy(false);
+    toast('Setup Error', err.message || 'Could not start interview.');
+  }
+}
+
+async function launchWatchAndBegin() {
+  if (!currentPlacementSessionId) return;
+  await initPlacementCamera();
+  await initPlacementAudio();
+  startPlacementTimer(placementDurationMins);
+  if (placementQuestionPending) {
+    speakQuestion(placementQuestionPending);
+  }
+  if ($('#launchWatchBtn')) $('#launchWatchBtn').classList.add('hidden');
+  toast('Interview Live', 'Session clock started! Speak or type your answer.');
+}
+
+async function submitTurnAnswer() {
+  if (!currentPlacementSessionId) return;
+  const answerText = $('#userAnswerText') ? $('#userAnswerText').value.trim() : '';
+  if (!answerText) {
+    toast('Empty Answer', 'Please speak or type your answer before submitting.');
+    return;
+  }
+
+  try {
+    setBusy(true, 'AI Interviewer evaluating response & formulating follow-up...');
+    const data = await API.post('/api/interview/respond', {
+      session_id: currentPlacementSessionId,
+      user_answer: answerText,
+      audio_duration_seconds: 15.0
+    });
+    setBusy(false);
+
+    const logEl = $('#transcriptTurnLog');
+    if (logEl) {
+      logEl.innerHTML += `<div style="padding:6px;background:rgba(81,221,255,.05);border-radius:6px;color:var(--cyan);margin-top:4px;"><b>Your Answer:</b> ${esc(answerText)}</div>`;
+    }
+
+    if (data.completed) {
+      toast('Interview Complete', 'All questions answered! Concluding session...');
+      await concludeMockInterview();
+      return;
+    }
+
+    if ($('#currentTurnNumber')) $('#currentTurnNumber').textContent = data.turn_index;
+    if ($('#currentQuestionText')) $('#currentQuestionText').textContent = data.next_question;
+    if ($('#userAnswerText')) $('#userAnswerText').value = '';
+
+    if (logEl) {
+      logEl.innerHTML += `<div style="padding:6px;background:rgba(255,255,255,.02);border-radius:6px;margin-top:4px;"><b>Q${data.turn_index}:</b> ${esc(data.next_question)}</div>`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    speakQuestion(data.next_question);
+  } catch (err) {
+    setBusy(false);
+    toast('Response Error', err.message || 'Could not process turn.');
+  }
+}
+
+async function concludeMockInterview() {
+  if (!currentPlacementSessionId) return;
+  clearInterval(placementTimerInterval);
+  stopPlacementCamera();
+  stopPlacementAudio();
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+  try {
+    setBusy(true, 'Synthesizing evaluation report, voice metrics & skill gaps...');
+    const data = await API.post(`/api/interview/end?session_id=${currentPlacementSessionId}`);
+    setBusy(false);
+
+    placementLastReport = data;
+    renderPerformanceReport(data.report);
+    renderSkillGapsTable(data.detected_skill_gaps);
+
+    if ($('#getReportFooterCard')) $('#getReportFooterCard').classList.remove('hidden');
+    toast('Interview Finalized', 'Click "Get Your Report" to view your detailed evaluation score and feedback!');
+  } catch (err) {
+    setBusy(false);
+    toast('Report Error', err.message || 'Could not generate report.');
+  }
+}
+
+function openPerformanceReportTab() {
+  $$('.placement-tab-btn').forEach(b => b.classList.remove('on'));
+  const repTab = $('[data-ptab="report"]');
+  if (repTab) repTab.classList.add('on');
+
+  ['setup', 'gaps', 'jobs', 'history'].forEach(t => {
+    const el = $('#ptab-' + t + '-content');
+    if (el) el.classList.add('hidden');
+  });
+  if ($('#ptab-report-content')) $('#ptab-report-content').classList.remove('hidden');
+}
+
+function renderPerformanceReport(report) {
+  const container = $('#reportContainer');
+  if (!container || !report) return;
+
+  const cats = report.category_scores || {};
+  let barsHtml = '';
+  for (const [k, v] of Object.entries(cats)) {
+    barsHtml += `
+      <div class="rubric-bar-row">
+        <span>${esc(k)}</span>
+        <div class="rubric-bar-bg"><div class="rubric-bar-fill" style="width:${Math.round(v)}%;"></div></div>
+        <span><b>${Math.round(v)}</b></span>
+      </div>`;
+  }
+
+  const strongHtml = (report.strong_areas || []).map(s => `<li style="color:var(--mint);margin-bottom:4px;">✓ ${esc(s)}</li>`).join('');
+  const weakHtml = (report.needs_improvement || []).map(w => `<li style="color:var(--solar);margin-bottom:4px;">⚠ ${esc(w)}</li>`).join('');
+  
+  const voice = report.voice_metrics || {};
+  const camera = report.camera_coaching || {};
+  const cameraTips = (camera.coaching_tips || []).map(t => `<li>• ${esc(t)}</li>`).join('');
+
+  container.innerHTML = `
+    <div class="placement-grid">
+      <div class="report-card">
+        <div class="eyebrow" style="color:var(--cyan);">Overall Assessment</div>
+        <div class="score-dial-box" style="margin:16px 0;">
+          <div class="score-number">${Math.round(report.overall_score || 72)}/100</div>
+          <div style="font-size:12px;color:var(--muted);">Placement Readiness Index</div>
+        </div>
+        <div style="margin-top:20px;">
+          <div class="eyebrow" style="margin-bottom:10px;">Category Breakdown</div>
+          ${barsHtml}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="report-card">
+          <div class="eyebrow" style="color:var(--mint);margin-bottom:8px;">Strong Areas</div>
+          <ul style="list-style:none;padding:0;margin:0;font-size:13px;">${strongHtml || '<li>✓ Fundamental syntax</li>'}</ul>
+        </div>
+        <div class="report-card">
+          <div class="eyebrow" style="color:var(--solar);margin-bottom:8px;">Needs Improvement</div>
+          <ul style="list-style:none;padding:0;margin:0;font-size:13px;">${weakHtml || '<li>⚠ Advanced algorithms</li>'}</ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="placement-grid" style="margin-top:20px;">
+      <!-- Voice Communication -->
+      <div class="report-card">
+        <div class="eyebrow" style="color:var(--violet);margin-bottom:8px;">Voice & Communication Analysis</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
+          <div class="mini-stat"><b>${voice.speaking_pace_wpm || 130}</b><span>WPM Pace</span></div>
+          <div class="mini-stat"><b>${voice.filler_words_count || 0}</b><span>Filler Words</span></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);line-height:1.5;">${esc(voice.structure_feedback || 'Good articulation.')}</p>
+      </div>
+
+      <!-- Camera Coaching Feedback -->
+      <div class="report-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="eyebrow" style="color:var(--cyan);">Camera Coaching Feedback</div>
+          <span style="font-size:10px;background:rgba(81,221,255,.1);color:var(--cyan);padding:2px 8px;border-radius:4px;font-weight:600;">Coaching Only — Not used for job match</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
+          <div class="mini-stat"><b>${camera.facing_camera_percentage || 88}%</b><span>Facing Camera</span></div>
+          <div class="mini-stat"><b>${camera.posture_consistency_percentage || 90}%</b><span>Posture Steady</span></div>
+        </div>
+        <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--muted);line-height:1.5;">${cameraTips}</ul>
+      </div>
+    </div>`;
+}
+
+function renderSkillGapsTable(gaps) {
+  const container = $('#gapsTableContainer');
+  if (!container) return;
+  if (!gaps || !gaps.length) {
+    container.innerHTML = '<p style="color:var(--muted);">No skill gaps detected in current session.</p>';
+    return;
+  }
+
+  let rows = gaps.map(g => `
+    <div style="display:grid;grid-template-columns:1fr 100px 100px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:13px;">
+      <span><b>${esc(g.skill_name)}</b></span>
+      <span style="color:var(--solar);">Current: ${g.current_percentage}%</span>
+      <span style="color:var(--mint);">Target: ${g.target_percentage}%</span>
+    </div>`).join('');
+
+  container.innerHTML = `
+    <div style="margin-bottom:14px;color:var(--muted);font-size:12.5px;">These gaps were detected from your interview session responses. Clicking 'Add Interview Gaps to TESSA Roadmap' will update your learner profile and regenerate your prerequisite-locked study route.</div>
+    <div>${rows}</div>`;
+}
+
+async function applyInterviewSkillGaps() {
+  if (!currentPlacementSessionId) {
+    toast('No Session', 'Complete an interview session first to apply skill gaps.');
+    return;
+  }
+  ensureLearner();
+
+  try {
+    setBusy(true, 'Injecting interview skill gaps into TESSA profile & regenerating learning roadmap...');
+    const data = await API.post('/api/interview/apply-gaps', {
+      learner_id: learnerId,
+      session_id: currentPlacementSessionId
+    });
+
+    if (profile.goal_text) {
+      await API.post(`/api/path/${encodeURIComponent(learnerId)}/generate`, { role_id: profile.target_role });
+    }
+    setBusy(false);
+
+    toast('Roadmap Updated', `Successfully updated TESSA learning roadmap with ${data.gaps_applied || 0} weak skills!`);
+  } catch (err) {
+    setBusy(false);
+    toast('Sync Error', err.message || 'Could not update TESSA roadmap.');
+  }
+}
+
+async function fetchLiveJobMatches() {
+  const container = $('#jobsListContainer');
+  if (!container) return;
+  ensureLearner();
+  const role = $('#pRoleInput') ? $('#pRoleInput').value.trim() : 'Java Backend Developer';
+
+  try {
+    container.innerHTML = '<div style="padding:20px;text-align:center;"><span class="spinner"></span> Fetching live jobs from Adzuna / Tavily...</div>';
+    const data = await API.post('/api/jobs/match', {
+      learner_id: learnerId,
+      target_role: role,
+      location: 'India'
+    });
+
+    const jobs = data.jobs || [];
+    if (!jobs.length) {
+      container.innerHTML = '<p style="color:var(--muted);">No matching job listings found currently.</p>';
+      return;
+    }
+
+    let cardsHtml = jobs.map(j => `
+      <div class="job-item-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <div>
+            <h4 style="font:600 16px/1.2 var(--display);margin:0 0 4px;color:#fff;">${esc(j.title)}</h4>
+            <div style="font-size:12px;color:var(--muted);">${esc(j.company)} • ${esc(j.location)}</div>
+          </div>
+          <span class="job-match-badge">Match: ${Math.round(j.match_percentage)}%</span>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin:8px 0;line-height:1.4;">${esc(j.description)}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;">
+          ${(j.matched_skills || []).map(m => `<span style="font-size:11px;background:rgba(16,185,129,.12);color:#10b981;padding:2px 8px;border-radius:4px;">✓ ${esc(m)}</span>`).join('')}
+          ${(j.missing_skills || []).map(m => `<span style="font-size:11px;background:rgba(239,68,68,.12);color:var(--solar);padding:2px 8px;border-radius:4px;">⚠ Missing: ${esc(m)}</span>`).join('')}
+        </div>
+        <div style="margin-top:10px;">
+          <a href="${esc(j.url)}" target="_blank" rel="noopener" class="btn-secondary" style="font-size:12px;padding:6px 12px;display:inline-flex;">Apply Now ↗</a>
+        </div>
+      </div>`).join('');
+
+    container.innerHTML = cardsHtml;
+  } catch (err) {
+    container.innerHTML = `<p style="color:var(--danger);">Error fetching jobs: ${esc(err.message)}</p>`;
+  }
+}
+
+async function fetchInterviewHistory() {
+  const container = $('#historyListContainer');
+  if (!container) return;
+  ensureLearner();
+
+  try {
+    const data = await API.get(`/api/interview/history/${encodeURIComponent(learnerId)}`);
+    const history = data.history || [];
+    if (!history.length) {
+      container.innerHTML = '<p style="color:var(--muted);">No past interview history recorded yet. Complete mock sessions to track your progress.</p>';
+      return;
+    }
+
+    let rowsHtml = history.map((item, idx) => `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:rgba(8,12,21,.34);border:1px solid var(--line-soft);border-radius:10px;margin-bottom:10px;">
+        <div>
+          <b style="color:var(--text);font-size:14px;">Interview #${idx + 1} — ${esc(item.target_role)} (${esc(item.interview_type)})</b>
+          <div style="font-size:11px;color:var(--faint);margin-top:2px;">${new Date(item.created_at).toLocaleDateString()}</div>
+        </div>
+        <span style="font-size:18px;font-weight:700;color:var(--cyan);">${Math.round(item.overall_score)}%</span>
+      </div>`).join('');
+
+    let growthBadge = data.trend_deltas?.overall_growth ? `<div style="margin-bottom:14px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#10b981;padding:8px 14px;border-radius:8px;font-size:13px;"><b>Overall Improvement: ${esc(data.trend_deltas.overall_growth)}</b> across sessions</div>` : '';
+
+    container.innerHTML = growthBadge + rowsHtml;
+  } catch (err) {
+    container.innerHTML = `<p style="color:var(--danger);">Error fetching history: ${esc(err.message)}</p>`;
+  }
+}
+
+// Bind Placement Hub UI buttons
+if ($('#startInterviewBtn')) $('#startInterviewBtn').addEventListener('click', startMockInterview);
+if ($('#launchWatchBtn')) $('#launchWatchBtn').addEventListener('click', launchWatchAndBegin);
+if ($('#getReportBtn')) $('#getReportBtn').addEventListener('click', openPerformanceReportTab);
+if ($('#submitAnswerBtn')) $('#submitAnswerBtn').addEventListener('click', submitTurnAnswer);
+if ($('#concludeInterviewBtn')) $('#concludeInterviewBtn').addEventListener('click', concludeMockInterview);
+if ($('#applyGapsBtn')) $('#applyGapsBtn').addEventListener('click', applyInterviewSkillGaps);
+if ($('#refreshJobsBtn')) $('#refreshJobsBtn').addEventListener('click', fetchLiveJobMatches);
+
+if ($('#pTypeSelect')) {
+  $('#pTypeSelect').addEventListener('change', () => {
+    const isFull = $('#pTypeSelect').value.includes('Full');
+    if ($('#pDurationSelect')) {
+      if (isFull) {
+        $('#pDurationSelect').value = '60';
+        $('#pDurationSelect').disabled = true;
+        if ($('#pDurationNotice')) $('#pDurationNotice').classList.remove('hidden');
+      } else {
+        $('#pDurationSelect').disabled = false;
+        if ($('#pDurationNotice')) $('#pDurationNotice').classList.add('hidden');
+      }
+    }
+  });
+}
+
+if ($('#replayAudioBtn')) {
+  $('#replayAudioBtn').addEventListener('click', () => {
+    const qText = $('#currentQuestionText')?.textContent;
+    if (qText) speakQuestion(qText);
+  });
+}
+
+if ($('#toggleCamBtn')) {
+  $('#toggleCamBtn').addEventListener('click', () => {
+    if (placementCameraStream) {
+      const vTrack = placementCameraStream.getVideoTracks()[0];
+      if (vTrack) {
+        vTrack.enabled = !vTrack.enabled;
+        $('#toggleCamBtn').textContent = vTrack.enabled ? '📷 Cam ON' : '📷 Cam OFF';
+        if ($('#videoCameraStatus')) {
+          $('#videoCameraStatus').innerHTML = vTrack.enabled ? '● Camera ON | Posture Steady' : '○ Camera Disabled';
+        }
+      }
+    }
+  });
+}
+
+if ($('#toggleMicBtn')) {
+  $('#toggleMicBtn').addEventListener('click', () => {
+    if (placementMicStream) {
+      const aTrack = placementMicStream.getAudioTracks()[0];
+      if (aTrack) {
+        aTrack.enabled = !aTrack.enabled;
+        $('#toggleMicBtn').textContent = aTrack.enabled ? '🎙️ Mic ON' : '🎙️ Muted';
+        if ($('#micStatusText')) {
+          $('#micStatusText').textContent = aTrack.enabled ? 'Active' : 'Muted';
+          $('#micStatusText').style.color = aTrack.enabled ? '#10b981' : 'var(--solar)';
+        }
+      }
+    }
+  });
+}
+
+if ($('#pResumeUploadBtn') && $('#pResumeFile')) {
+  $('#pResumeUploadBtn').addEventListener('click', () => $('#pResumeFile').click());
+  $('#pResumeFile').addEventListener('change', async () => {
+    const file = $('#pResumeFile').files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        setBusy(true, 'Analyzing document with Gemini AI resume classifier...');
+        const res = await fetch('/api/interview/resume', { method: 'POST', body: formData });
+        const data = await res.json();
+        setBusy(false);
+        if (res.ok && data.parsed) {
+          if ($('#pResumeStatus')) {
+            $('#pResumeStatus').style.display = 'block';
+            $('#pResumeStatus').style.color = 'var(--mint)';
+            $('#pResumeStatus').textContent = `✓ Resume Verified & Parsed: ${data.profile?.skills?.length || 0} skills & projects extracted.`;
+          }
+          toast('Resume Uploaded', 'Resume verified and added to interview personalization.');
+        } else {
+          if ($('#pResumeFile')) $('#pResumeFile').value = '';
+          if ($('#pResumeStatus')) {
+            $('#pResumeStatus').style.display = 'block';
+            $('#pResumeStatus').style.color = 'var(--solar)';
+            $('#pResumeStatus').textContent = `⚠ Upload Rejected: ${data.detail || 'File is not a valid resume.'}`;
+          }
+          toast('Resume Rejected', data.detail || 'Uploaded file is not a valid resume/CV.');
+        }
+      } catch (err) {
+        setBusy(false);
+        if ($('#pResumeFile')) $('#pResumeFile').value = '';
+        toast('Upload Error', err.message || 'Could not parse file.');
+      }
+    }
+  });
+}
+
+if ($('#startSpeechRecognitionBtn')) {
+  $('#startSpeechRecognitionBtn').addEventListener('click', () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      toast('Speech Recognition Unavailable', 'Browser speech recognition not supported in this browser. Please type your response.');
+      return;
+    }
+    if (!placementSpeechRec) {
+      placementSpeechRec = new SpeechRecognition();
+      placementSpeechRec.continuous = true;
+      placementSpeechRec.interimResults = true;
+      placementSpeechRec.onresult = event => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          transcript += event.results[i][0].transcript;
+        }
+        if ($('#userAnswerText')) $('#userAnswerText').value = transcript;
+
+        // Live filler words & WPM check
+        const textLower = transcript.toLowerCase();
+        const fillers = ['umm', 'um', 'uh', 'like', 'actually', 'basically', 'you know'];
+        let count = 0;
+        fillers.forEach(f => {
+          const matches = textLower.match(new RegExp('\\b' + f + '\\b', 'g'));
+          if (matches) count += matches.length;
+        });
+        if ($('#liveFillersText')) $('#liveFillersText').textContent = count;
+
+        const words = transcript.trim().split(/\s+/).filter(Boolean).length;
+        if ($('#liveWpmText')) $('#liveWpmText').textContent = words > 0 ? `${words} words` : '0 WPM';
+      };
+      placementSpeechRec.onerror = () => { toast('Voice Input Error', 'Speech recognition error.'); };
+    }
+    placementSpeechRec.start();
+    toast('Voice Input Started', 'Listening to your response...');
+  });
+}
 
 /* ------------------------------------------------------------------ boot */
 

@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 load_dotenv(Path(__file__).resolve().parent.parent / ".env", override=True)
 
 from . import llm, store  # noqa: E402  - after load_dotenv so the key is visible
-from .api import chat, dashboard, path, profile, workspace  # noqa: E402
+from .api import chat, dashboard, interview, path, profile, workspace  # noqa: E402
 from .api.deps import goal_session  # noqa: E402
 from .config import settings  # noqa: E402
 from .engines import discovery  # noqa: E402
@@ -44,6 +44,8 @@ app.include_router(path.router)
 app.include_router(dashboard.router)
 app.include_router(chat.router)
 app.include_router(workspace.router)
+app.include_router(interview.router)
+app.include_router(interview.jobs_router)
 
 
 # The browser holds the authoritative learner profile and sends it back on

@@ -10,6 +10,8 @@ rank-bm25>=0.2.2
 networkx>=3.2
 google-genai>=1.0
 tavily-python>=0.7
+python-multipart>=0.0.18
+pypdf>=5.0.0
 
 # Optional - better retrieval quality on paraphrased queries. Everything runs
 # without it, retrieval.py falls back to TF-IDF and says so in the logs. Left

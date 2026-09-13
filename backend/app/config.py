@@ -36,6 +36,14 @@ class Settings(BaseSettings):
         default=None,
         validation_alias=AliasChoices("TAVILY_API_KEY", "LPR_TAVILY_API_KEY"),
     )
+    adzuna_app_id: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("ADZUNA_APP_ID", "LPR_ADZUNA_APP_ID"),
+    )
+    adzuna_app_key: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("ADZUNA_APP_KEY", "LPR_ADZUNA_APP_KEY"),
+    )
     # Optional. Any pool entry written as "vendor/model" is routed through the
     # OpenAI-compatible gateway below instead of the Gemini SDK; without this
     # key those entries are dropped from the pool and Gemini serves every lane.
