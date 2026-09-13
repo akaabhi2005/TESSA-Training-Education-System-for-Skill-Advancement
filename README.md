@@ -1,140 +1,287 @@
-# TESSA — Training & Education System for Skill Advancement
+TESSA — Training & Education System for Skill Advancement
 
-TESSA turns a stated goal into a prerequisite-locked route of real learning
-resources, fitted to the hours the learner actually has — and explains every
-recommendation it makes, including the ones it did not make.
+TESSA is an AI-driven adaptive learning system that creates personalized learning roadmaps based on a learner's goal, current skills, available time, preferences, and progress.
 
-There is no course catalogue in this repository. For each goal, TESSA derives
-the skill graph behind it, searches the live web for resources, and plans a
-route through them with a deterministic engine.
+Unlike fixed-course recommenders, TESSA does not force every learner into the same predefined path. It builds a skill graph for the chosen goal, discovers relevant learning resources from the live web, identifies skill gaps, and creates a prerequisite-aware roadmap using deterministic planning algorithms.
 
-## Why it is built this way
+AI understands. Algorithms decide.
 
-A fixed catalogue caps the system at the roles somebody typed out in advance.
-Ask such a system for "become a UX researcher" or "build a Rust game engine"
-and it quietly answers about the nearest role it knows — a lookup table wearing
-a recommender's clothes.
+✨ Key Features
 
-So the split is deliberate:
+Personalized Learning Roadmaps
+Generates a roadmap for almost any learning goal.
 
-- **The model does what a fixed list structurally cannot** — decompose an
-  arbitrary goal into its own skill graph, and read live search results into
-  typed resources.
-- **The algorithms decide the route** — gap weighting, budgeted set cover,
-  topological ordering. These are deterministic and auditable, which is what
-  makes a route defensible rather than "the model said so".
+Skill Graph & Prerequisites
+Breaks a goal into required skills and arranges them in the correct learning order.
 
-Two rules hold throughout. Nothing is fabricated: a resource is accepted only
-if its URL came back from the search, durations are the source's own or are
-flagged as estimates, and there are no invented ratings or enrollment counts.
-And when a route cannot be produced honestly, the system says so instead of
-falling back to seed data.
+Live Resource Discovery
+Uses Tavily to discover real courses, tutorials, documentation, and learning resources from the web.
 
-## How a request flows
+Skill Gap Analysis
+Compares the learner's current mastery with the skills required for the target goal.
 
-```
-goal in free text
-  │
-  ├─ intake        goal + constraints (hours, weeks, budget, format), domain-blind
-  ├─ goal graph    Gemini → skills, target levels, importance weights, prereq DAG
-  ├─ discovery     Tavily search per skill group, concurrently → typed resources
-  ├─ catalogue     project the skill DAG onto the resources' prerequisites
-  │
-  ├─ profiler      mastery vector from claims, history and diagnostic answers
-  ├─ gap           importance-weighted shortfall per skill
-  ├─ retrieval     score resources against the gap, emitting reason codes
-  ├─ planner       budgeted greedy set cover → topological sort → phases
-  └─ explainer     prose written only from the reason codes the scorer emitted
-```
+Adaptive Diagnostics
+Uses quizzes and learner evidence to improve mastery estimates.
 
-The planner's guarantees are asserted in the test suite, not assumed:
+Deterministic Planning
+Uses budgeted coverage and prerequisite-aware ordering instead of letting an LLM randomly decide the final roadmap.
 
-- **Zero prerequisite violations.** The route is replayed and mastery is
-  checked before every item.
-- **The hour budget is never exceeded**, across several budgets.
-- **More time never lowers projected readiness.**
-- **Rejected and completed resources do not come back.**
+Explainable Recommendations
+Explains why a resource was selected and why another resource may not be included.
 
-## Grounding
+What-If Simulator
+Lets learners change available hours or learning duration and preview how the roadmap changes.
 
-Every scored term emits a reason code as it is computed — which gap it closes,
-what it assumes, how its level matched, what it costs in hours. The explanation
-layer is handed those codes and may write only from them, so an explanation is
-a rendering of the arithmetic rather than a plausible story about it. The same
-contract runs in reverse for "why is this *not* on my route", which is answered
-from the prerequisite graph and the hour budget.
+Progress Tracking
+Tracks completed learning resources, milestones, and learner readiness.
 
-## Run locally
+AI Learning Assistant
+Provides contextual guidance using the learner's active roadmap and progress.
 
-```powershell
-cd backend
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-copy .env.example .env    # then paste your keys into .env
-uvicorn app.main:app --reload --port 8000
-```
+🧠 How TESSA Works
 
-Open <http://localhost:8000>. The UI is one self-contained file with no build
-step: `backend/app/static/index.html`.
+User Goal + Constraints
+        ↓
+Goal Understanding
+        ↓
+Skill Graph Generation
+        ↓
+Live Resource Discovery
+        ↓
+Learner Mastery Profile
+        ↓
+Skill Gap Analysis
+        ↓
+Resource Ranking
+        ↓
+Budgeted Course Selection
+        ↓
+Prerequisite-Aware Ordering
+        ↓
+Personalized Roadmap
+        ↓
+Progress / Feedback / Diagnostic
+        ↓
+Adaptive Replanning
 
-To see a route built from the command line:
+The core idea is simple:
 
-```powershell
-python scripts/demo.py --goal "Become a machine learning engineer" --hours 8 --weeks 20
-```
+AI is used for understanding goals, interpreting resources, explanations, and assistance.
 
-## Configuration
+Algorithms are used for selecting, ordering, and validating the learning path.
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `GEMINI_API_KEY` | yes | Skill-graph derivation, resource labelling, explanations |
-| `TAVILY_API_KEY` | yes | Live web search for resources |
-| `LPR_MODEL` | no | Primary Gemini model (default `gemini-3.6-flash`) |
-| `LPR_OFFLINE` | no | Never call the API; cached goals still resolve |
-| `LPR_USE_EMBEDDINGS` | no | Set false to force the TF-IDF retrieval fallback |
-| `LPR_CACHE_DIR` | no | Where derived graphs and resources are cached |
+This makes the roadmap more auditable, explainable, and testable.
 
-There are no credentials in this repository and no defaults in source — the
-application reads both keys from the environment and fails honestly without
-them. Copy `backend/.env.example` to `backend/.env` for local work; `.env` is
-gitignored.
 
-## Deployment
+Architecture in Simple Words
 
-Vercel serves `public/index.html` at the root and routes `/api/*` to the
-FastAPI app through `api/index.py`. Both keys are set as project environment
-variables.
+                     ┌─────────────────────┐
+                     │        USER         │
+                     │ Goal + Constraints  │
+                     └──────────┬──────────┘
+                                │
+                                ▼
+                     ┌─────────────────────┐
+                     │      FRONTEND       │
+                     │ HTML / CSS / JS     │
+                     └──────────┬──────────┘
+                                │
+                                ▼
+                     ┌─────────────────────┐
+                     │   FASTAPI BACKEND   │
+                     └──────────┬──────────┘
+                                │
+               ┌────────────────┼────────────────┐
+               ▼                ▼                ▼
+        ┌────────────┐   ┌──────────────┐  ┌──────────────┐
+        │   Gemini   │   │    Tavily    │  │Learner Model │
+        │ Skill DAG  │   │ Live Search  │  │ + Diagnostic │
+        └──────┬─────┘   └──────┬───────┘  └──────┬───────┘
+               │                │                 │
+               └──────────┬─────┴──────────┬──────┘
+                          ▼                ▼
+                   ┌──────────────┐  ┌──────────────┐
+                   │ Skill Gaps   │  │Resource Pool │
+                   └──────┬───────┘  └──────┬───────┘
+                          └──────────┬───────┘
+                                     ▼
+                           ┌───────────────────┐
+                           │  Hybrid Ranking   │
+                           │ BM25 / TF-IDF     │
+                           └─────────┬─────────┘
+                                     ▼
+                           ┌───────────────────┐
+                           │Deterministic      │
+                           │Planner            │
+                           │Set Cover + Budget │
+                           └─────────┬─────────┘
+                                     ▼
+                           ┌───────────────────┐
+                           │Topological Sort   │
+                           └─────────┬─────────┘
+                                     ▼
+                           ┌───────────────────┐
+                           │Personalized Route │
+                           │Phases + Projects  │
+                           └─────────┬─────────┘
+                                     │
+                                     ▼
+                           Progress / Feedback
+                                     │
+                                     └──────► Replan
 
-One limitation worth stating plainly: serverless functions only have ephemeral
-`/tmp`, and any request can be answered by an instance that has never seen a
-given learner. The browser therefore holds the authoritative profile and sends
-it with each request, guarded by a revision counter, and a workspace loads in a
-single call rather than six. That keeps a session coherent, but a genuinely
-multi-user deployment wants durable shared storage behind `store.py` and the
-discovery caches.
 
-## API
+Workflow Explained
 
-| Endpoint | Purpose |
-| --- | --- |
-| `POST /api/intake` | Capture a goal and constraints from free text |
-| `GET /api/workspace/{id}` | Profile, route, catalogue and dashboard in one call |
-| `POST /api/path/{id}/generate` | Derive the graph, discover resources, plan the route |
-| `GET /api/path/{id}/explain/{resource_id}` | Explanation plus the reason codes behind it |
-| `GET /api/path/{id}/why-not/{resource_id}` | Counterfactual from the graph and the budget |
-| `POST /api/path/{id}/feedback` | Apply a signal and re-plan |
-| `POST /api/path/{id}/simulate` | What-if over hours and weeks, nothing persisted |
-| `GET/POST /api/profile/{id}/diagnostic` | Adaptive diagnostic and grading |
-| `GET /api/dashboard/{id}` | Readiness, gaps, progress, next actions |
-| `POST /api/chat` | Grounded assistant, streamed |
 
-## Tests
+Goal Intake — Learner enters a free-text goal, available hours, timeline, budget, and preferences.
 
-```powershell
-cd backend
-pytest -q
-```
+Skill Graph Generation — Gemini converts the goal into skills and prerequisite relationships.
 
-54 tests, all offline — fixtures stand in for the model and search boundary, so
-the suite needs no key and does not depend on what the live web returns today.
+Live Discovery — Tavily finds relevant real-world courses, tutorials, and documentation.
+
+Learner Profiling — TESSA combines stated skills, learning history, diagnostics, and progress.
+
+Skill Gap Analysis — Current mastery is compared with required target mastery.
+
+Resource Ranking — Candidate resources are ranked using relevance, gap coverage, level fit, and preferences.
+
+Budgeted Selection — The planner selects useful resources within available learning time.
+
+Topological Ordering — Prerequisites are placed before advanced topics.
+
+Roadmap Creation — Selected resources are grouped into phases with projects and checkpoints.
+
+Explainability — TESSA shows why a resource was selected or omitted.
+
+Adaptive Replanning — Progress, diagnostics, and feedback update the learner model and roadmap.
+
+TESSA is not designed to generate one static roadmap and stop. The learner model evolves as the user studies, completes resources, takes diagnostics, or gives feedback.
+
+
+
+🛠️ Tech Stack
+
+Frontend
+
+HTML5
+
+CSS3
+
+Vanilla JavaScript
+
+Backend
+
+Python
+
+FastAPI
+
+Pydantic
+
+Uvicorn
+
+AI & Search
+
+Google Gemini API
+
+Tavily Search API
+
+Optional OpenAI-compatible model routing
+
+Ranking & Planning
+
+BM25
+
+TF-IDF / Semantic Retrieval
+
+Reciprocal Rank Fusion
+
+NetworkX
+
+NumPy
+
+scikit-learn
+
+Budgeted Set-Cover / Maximum-Coverage style planning
+
+Topological Sorting
+
+Deployment & State
+
+Vercel
+
+JSON / process-local prototype state
+
+Browser-managed learner profile state
+
+
+🎯 What Makes TESSA Different?
+
+Traditional learning platforms usually recommend from a fixed internal catalogue.
+
+TESSA instead starts with:
+
+What does this learner need to learn next to reach this goal within their constraints?
+
+Its main differentiators are:
+
+Dynamic goal-to-skill decomposition
+
+Live web-grounded learning resources
+
+Learner-specific skill-gap analysis
+
+Deterministic roadmap planning
+
+Prerequisite-safe ordering
+
+Explainable recommendations
+
+Adaptive replanning based on progress and diagnostics
+
+
+🔮 Future Scope
+
+Planned extensions include:
+
+PostgreSQL / Supabase-based persistent storage
+
+Authentication and multi-device learner accounts
+
+Verified resource quality signals
+
+Job-role and industry skill mapping
+
+Placement Hub
+
+AI Mock Interviews
+
+Interview performance analysis
+
+Interview-based skill-gap detection
+
+Live job recommendations
+
+Resume-based interview preparation
+
+Long-term learner analytics
+
+Mobile application
+
+💡 Vision
+
+TESSA aims to become more than a course recommender.
+
+The long-term goal is to create a complete system that helps a learner:
+
+Learn → Practice → Validate → Improve → Prepare for Interviews → Match with Opportunities
+
+📌 Project Name
+
+TESSA
+Training & Education System for Skill Advancement
+
+📄 License
+
+This project is currently intended for educational, academic, and prototype use.
+
