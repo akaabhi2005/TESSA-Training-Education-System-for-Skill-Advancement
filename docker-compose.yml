@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  tessa-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - LPR_MODEL=gemini-3.6-flash
+      - LPR_OFFLINE=false
+    volumes:
+      - tessa-data:/app/backend/data
+    restart: unless-stopped
+
+volumes:
+  tessa-data:
