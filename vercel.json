@@ -5,7 +5,7 @@
     "api/index.py": {
       "maxDuration": 300,
       "includeFiles": "backend/app/**",
-      "excludeFiles": "{engine/**,data/**,backend/data/**,backend/tests/**,backend/scripts/**}"
+      "excludeFiles": "{backend/data/**,backend/tests/**,backend/scripts/**}"
     }
   },
   "headers": [

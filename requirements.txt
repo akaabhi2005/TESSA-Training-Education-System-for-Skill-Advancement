@@ -11,3 +11,5 @@ rank-bm25>=0.2.2
 networkx>=3.2
 google-genai>=1.0
 tavily-python>=0.7
+python-multipart>=0.0.18
+pypdf>=5.0.0
