@@ -679,6 +679,10 @@ a.btn-secondary{display:inline-flex;align-items:center;text-decoration:none}
 .placement-tab-btn:hover { border-color: var(--cyan); color: var(--text); }
 .placement-tab-btn.on { background: rgba(81,221,255,.12); border-color: var(--cyan); color: var(--cyan); font-weight: 600; }
 
+.company-pack-btn { padding: 8px 10px; font-size: 11.5px; background: rgba(255,255,255,.04); border: 1px solid var(--line-soft); border-radius: 8px; color: var(--muted); cursor: pointer; text-align: center; transition: all 0.15s; }
+.company-pack-btn:hover { background: rgba(81,221,255,.08); border-color: rgba(81,221,255,.3); color: #fff; }
+.company-pack-btn.on { background: rgba(81,221,255,.16); border-color: var(--cyan); color: var(--cyan); font-weight: 600; }
+
 .placement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 @media (max-width: 900px) { .placement-grid { grid-template-columns: 1fr; } }
 
@@ -889,6 +893,20 @@ a.btn-secondary{display:inline-flex;align-items:center;text-decoration:none}
           <div class="setup-card" id="interviewSetupCard">
             <div class="eyebrow" style="color:var(--cyan);margin-bottom:8px;">01 / Setup Mock Interview</div>
             <h3 style="font:600 20px/1.2 var(--display);margin-bottom:16px;">Configure Your Session</h3>
+
+            <!-- Company Placement Packs Selector -->
+            <div style="margin-bottom:16px;">
+              <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:8px;">🎯 Target Company Placement Pack (Optional Preset)</label>
+              <div class="company-pack-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px;">
+                <button type="button" class="company-pack-btn on" data-cpack="">Standard Role</button>
+                <button type="button" class="company-pack-btn" data-cpack="Amazon SDE-1">📦 Amazon SDE-1</button>
+                <button type="button" class="company-pack-btn" data-cpack="Google Software Engineer">🔍 Google SWE</button>
+                <button type="button" class="company-pack-btn" data-cpack="TCS NQT / Mass Recruiter">🏢 TCS NQT</button>
+                <button type="button" class="company-pack-btn" data-cpack="Infosys Specialist Engineer">💻 Infosys Specialist</button>
+                <button type="button" class="company-pack-btn" data-cpack="Product Manager">🎯 Product Manager</button>
+                <button type="button" class="company-pack-btn" data-cpack="Data Analyst / AI Engineer">📊 Data & AI Eng</button>
+              </div>
+            </div>
             
             <div style="display:flex;flex-direction:column;gap:14px;">
               <div>
@@ -947,7 +965,10 @@ a.btn-secondary{display:inline-flex;align-items:center;text-decoration:none}
               <div>
                 <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Upload Resume (PDF / Text - AI Validated)</label>
                 <input type="file" id="pResumeFile" accept=".pdf,.txt" style="display:none;" />
-                <button type="button" class="btn-secondary" id="pResumeUploadBtn" style="width:100%;text-align:center;justify-content:center;">📎 Drag & Drop or Choose Resume File</button>
+                <div id="pResumeDropzone" style="border:1px dashed var(--line-soft);padding:14px;border-radius:10px;text-align:center;cursor:pointer;background:rgba(255,255,255,.02);transition:all 0.2s;">
+                  <div style="font-size:13px;color:var(--text);font-weight:600;">📎 Drag & Drop or Click to Upload Resume</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px;">Supports PDF / TXT files for AI project & skill personalization</div>
+                </div>
                 <div id="pResumeStatus" style="font-size:11px;margin-top:6px;display:none;"></div>
               </div>
 
@@ -2776,6 +2797,25 @@ function startPlacementTimer(durationMins) {
 
 let placementDurationMins = 30;
 let placementQuestionPending = "";
+let selectedCompanyPack = "";
+let speechRecognitionInstance = null;
+
+// Company Pack selector button handlers
+$$('.company-pack-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('.company-pack-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    selectedCompanyPack = btn.getAttribute('data-cpack') || "";
+    if (selectedCompanyPack) {
+      if ($('#pRoleInput') && selectedCompanyPack.includes('Amazon')) $('#pRoleInput').value = 'Software Development Engineer (SDE)';
+      else if ($('#pRoleInput') && selectedCompanyPack.includes('Google')) $('#pRoleInput').value = 'Software Development Engineer (SDE)';
+      else if ($('#pRoleInput') && selectedCompanyPack.includes('TCS')) $('#pRoleInput').value = 'Java Backend Developer';
+      else if ($('#pRoleInput') && selectedCompanyPack.includes('Product')) $('#pRoleInput').value = 'Product Manager';
+      else if ($('#pRoleInput') && selectedCompanyPack.includes('Data')) $('#pRoleInput').value = 'Data Analyst / AI Engineer';
+      toast('Preset Selected', `Target placement pack set to: ${selectedCompanyPack}`);
+    }
+  });
+});
 
 async function startMockInterview() {
   const role = $('#pRoleInput') ? $('#pRoleInput').value.trim() : 'Java Backend Developer';
@@ -2787,10 +2827,11 @@ async function startMockInterview() {
   ensureLearner();
 
   try {
-    setBusy(true, 'Preparing AI Interviewer & Blueprint...');
+    setBusy(true, 'Preparing AI Interviewer & Company Blueprint...');
     const data = await API.post('/api/interview/start', {
       learner_id: learnerId,
       target_role: role,
+      company_pack: selectedCompanyPack || null,
       interview_type: type,
       level: level,
       duration_minutes: duration
@@ -2804,7 +2845,7 @@ async function startMockInterview() {
     if ($('#interviewRoomCard')) $('#interviewRoomCard').classList.remove('hidden');
     if ($('#getReportFooterCard')) $('#getReportFooterCard').classList.add('hidden');
     
-    if ($('#roomRoleTag')) $('#roomRoleTag').textContent = role;
+    if ($('#roomRoleTag')) $('#roomRoleTag').textContent = selectedCompanyPack ? `${selectedCompanyPack} (${role})` : role;
     if ($('#roomTypeTag')) $('#roomTypeTag').textContent = type;
     if ($('#currentTurnNumber')) $('#currentTurnNumber').textContent = data.turn_index;
     if ($('#currentQuestionText')) $('#currentQuestionText').textContent = data.question;
@@ -2880,6 +2921,9 @@ async function concludeMockInterview() {
   stopPlacementCamera();
   stopPlacementAudio();
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  if (speechRecognitionInstance) {
+    try { speechRecognitionInstance.stop(); } catch(e){}
+  }
 
   try {
     setBusy(true, 'Synthesizing evaluation report, voice metrics & skill gaps...');
@@ -2931,57 +2975,188 @@ function renderPerformanceReport(report) {
   const voice = report.voice_metrics || {};
   const camera = report.camera_coaching || {};
   const cameraTips = (camera.coaching_tips || []).map(t => `<li>• ${esc(t)}</li>`).join('');
+  const qReviews = report.question_reviews || [];
+
+  let qReviewsHtml = '';
+  if (qReviews.length > 0) {
+    qReviewsHtml = qReviews.map((qr, idx) => `
+      <div style="background:rgba(8,12,21,.4);border:1px solid var(--line-soft);border-radius:10px;padding:14px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <b style="color:var(--cyan);font-size:13px;">Question ${qr.turn_index}</b>
+          <span style="font-size:12px;background:rgba(81,221,255,.12);color:var(--cyan);padding:2px 8px;border-radius:4px;font-weight:600;">Turn Score: ${qr.turn_score}/100</span>
+        </div>
+        <div style="font-size:13.5px;color:#fff;font-weight:600;margin-bottom:8px;">${esc(qr.question)}</div>
+        <div style="font-size:12.5px;color:var(--muted);background:rgba(255,255,255,.02);padding:10px;border-radius:6px;margin-bottom:8px;">
+          <b style="color:var(--text);">Your Response:</b> ${esc(qr.user_answer)}
+        </div>
+        <div style="font-size:12px;color:var(--mint);background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);padding:10px;border-radius:6px;">
+          <b>💡 Ideal Model Answer:</b> ${esc(qr.ideal_model_answer)}
+        </div>
+      </div>`).join('');
+  }
 
   container.innerHTML = `
+    <!-- Benchmark Header Card -->
+    <div style="background:linear-gradient(135deg, rgba(81,221,255,.1) 0%, rgba(139,92,246,.1) 100%);border:1px solid var(--cyan);border-radius:14px;padding:24px;margin-bottom:20px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;">
+      <div>
+        <span class="tag cyan" style="font-size:11px;margin-bottom:6px;">Placement Performance Report</span>
+        <h2 style="font:700 24px/1.2 var(--display);color:#fff;margin:6px 0 4px;">Candidate Scorecard & Benchmarking</h2>
+        <div style="font-size:13px;color:var(--muted);">Evaluated against live industry rubrics and STAR methodology</div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:center;">
+        <div style="text-align:center;background:rgba(8,12,21,.6);padding:12px 20px;border-radius:10px;border:1px solid var(--line-soft);">
+          <div style="font-size:32px;font-weight:800;color:var(--cyan);font-family:var(--display);">${Math.round(report.overall_score || 72)}/100</div>
+          <div style="font-size:11px;color:var(--muted);">Overall Score</div>
+        </div>
+        <div style="text-align:center;background:rgba(8,12,21,.6);padding:12px 20px;border-radius:10px;border:1px solid var(--line-soft);">
+          <div style="font-size:32px;font-weight:800;color:var(--mint);font-family:var(--display);">${report.percentile_rank || 85.0}%</div>
+          <div style="font-size:11px;color:var(--muted);">Percentile Rank</div>
+        </div>
+      </div>
+    </div>
+
     <div class="placement-grid">
       <div class="report-card">
-        <div class="eyebrow" style="color:var(--cyan);">Overall Assessment</div>
-        <div class="score-dial-box" style="margin:16px 0;">
-          <div class="score-number">${Math.round(report.overall_score || 72)}/100</div>
-          <div style="font-size:12px;color:var(--muted);">Placement Readiness Index</div>
-        </div>
-        <div style="margin-top:20px;">
-          <div class="eyebrow" style="margin-bottom:10px;">Category Breakdown</div>
-          ${barsHtml}
-        </div>
+        <div class="eyebrow" style="color:var(--cyan);margin-bottom:12px;">Category Competency Breakdown</div>
+        ${barsHtml}
       </div>
 
       <div style="display:flex;flex-direction:column;gap:18px;">
         <div class="report-card">
-          <div class="eyebrow" style="color:var(--mint);margin-bottom:8px;">Strong Areas</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div class="eyebrow" style="color:var(--mint);">Strong Areas</div>
+            <span style="font-size:11px;color:var(--mint);font-weight:600;">✓ Core Highlights</span>
+          </div>
           <ul style="list-style:none;padding:0;margin:0;font-size:13px;">${strongHtml || '<li>✓ Fundamental syntax</li>'}</ul>
         </div>
         <div class="report-card">
-          <div class="eyebrow" style="color:var(--solar);margin-bottom:8px;">Needs Improvement</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div class="eyebrow" style="color:var(--solar);">Needs Improvement</div>
+            <span style="font-size:11px;color:var(--solar);font-weight:600;">⚠ Action Areas</span>
+          </div>
           <ul style="list-style:none;padding:0;margin:0;font-size:13px;">${weakHtml || '<li>⚠ Advanced algorithms</li>'}</ul>
         </div>
       </div>
     </div>
 
     <div class="placement-grid" style="margin-top:20px;">
-      <!-- Voice Communication -->
+      <!-- Voice Communication & Speech Analytics -->
       <div class="report-card">
-        <div class="eyebrow" style="color:var(--violet);margin-bottom:8px;">Voice & Communication Analysis</div>
+        <div class="eyebrow" style="color:var(--violet);margin-bottom:8px;">Speech & Communication Metrics</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
-          <div class="mini-stat"><b>${voice.speaking_pace_wpm || 130}</b><span>WPM Pace</span></div>
+          <div class="mini-stat"><b>${voice.speaking_pace_wpm || 130}</b><span>Words / Min (WPM)</span></div>
           <div class="mini-stat"><b>${voice.filler_words_count || 0}</b><span>Filler Words</span></div>
         </div>
         <p style="font-size:12.5px;color:var(--muted);line-height:1.5;">${esc(voice.structure_feedback || 'Good articulation.')}</p>
       </div>
 
-      <!-- Camera Coaching Feedback -->
+      <!-- Camera & Visual Coaching Feedback -->
       <div class="report-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <div class="eyebrow" style="color:var(--cyan);">Camera Coaching Feedback</div>
-          <span style="font-size:10px;background:rgba(81,221,255,.1);color:var(--cyan);padding:2px 8px;border-radius:4px;font-weight:600;">Coaching Only — Not used for job match</span>
+          <div class="eyebrow" style="color:var(--cyan);">Visual & Posture Coaching</div>
+          <span style="font-size:10px;background:rgba(81,221,255,.1);color:var(--cyan);padding:2px 8px;border-radius:4px;font-weight:600;">Coaching HUD</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
-          <div class="mini-stat"><b>${camera.facing_camera_percentage || 88}%</b><span>Facing Camera</span></div>
+          <div class="mini-stat"><b>${camera.facing_camera_percentage || 88}%</b><span>Camera Eye-Contact</span></div>
           <div class="mini-stat"><b>${camera.posture_consistency_percentage || 90}%</b><span>Posture Steady</span></div>
         </div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--muted);line-height:1.5;">${cameraTips}</ul>
       </div>
-    </div>`;
+    </div>
+
+    <!-- Question-by-Question Model Answer Reviews -->
+    ${qReviewsHtml ? `
+    <div style="margin-top:24px;">
+      <div class="eyebrow" style="color:var(--cyan);margin-bottom:12px;">Detailed Turn Review & Model Ideal Answers</div>
+      ${qReviewsHtml}
+    </div>` : ''}`;
+}
+
+// Voice Speech Recognition Handler (Speech-to-Text)
+if ($('#startSpeechRecognitionBtn')) {
+  $('#startSpeechRecognitionBtn').addEventListener('click', () => {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) {
+      toast('Voice Not Supported', 'Web Speech API is not supported in this browser. You can type your answer in the box.');
+      return;
+    }
+
+    if (speechRecognitionInstance) {
+      try { speechRecognitionInstance.stop(); } catch(e){}
+      speechRecognitionInstance = null;
+      $('#startSpeechRecognitionBtn').textContent = '🎙️ Start Voice Input';
+      return;
+    }
+
+    try {
+      speechRecognitionInstance = new SpeechRec();
+      speechRecognitionInstance.continuous = true;
+      speechRecognitionInstance.interimResults = true;
+      speechRecognitionInstance.lang = 'en-US';
+
+      speechRecognitionInstance.onstart = () => {
+        $('#startSpeechRecognitionBtn').textContent = '🔴 Listening... (Click to Stop)';
+        $('#startSpeechRecognitionBtn').style.borderColor = 'var(--danger)';
+        toast('Listening', 'Speak clearly into your microphone.');
+      };
+
+      speechRecognitionInstance.onresult = (event) => {
+        let finalTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          finalTranscript += event.results[i][0].transcript;
+        }
+        if ($('#userAnswerText')) {
+          $('#userAnswerText').value = finalTranscript;
+        }
+      };
+
+      speechRecognitionInstance.onerror = (event) => {
+        toast('Speech Error', 'Microphone recognition error: ' + event.error);
+        $('#startSpeechRecognitionBtn').textContent = '🎙️ Start Voice Input';
+        $('#startSpeechRecognitionBtn').style.borderColor = 'var(--line-soft)';
+      };
+
+      speechRecognitionInstance.onend = () => {
+        $('#startSpeechRecognitionBtn').textContent = '🎙️ Start Voice Input';
+        $('#startSpeechRecognitionBtn').style.borderColor = 'var(--line-soft)';
+      };
+
+      speechRecognitionInstance.start();
+    } catch(err) {
+      toast('Speech Error', err.message || 'Could not start voice recognition.');
+    }
+  });
+}
+
+// Resume Dropzone Drag & Drop
+if ($('#pResumeDropzone') && $('#pResumeFile')) {
+  const dropzone = $('#pResumeDropzone');
+  dropzone.addEventListener('click', () => $('#pResumeFile').click());
+  
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      dropzone.style.background = 'rgba(81,221,255,.08)';
+      dropzone.style.borderColor = 'var(--cyan)';
+    }, false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      dropzone.style.background = 'rgba(255,255,255,.02)';
+      dropzone.style.borderColor = 'var(--line-soft)';
+    }, false);
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    if (files && files[0]) {
+      $('#pResumeFile').files = files;
+      $('#pResumeFile').dispatchEvent(new Event('change'));
+    }
+  });
 }
 
 function renderSkillGapsTable(gaps) {

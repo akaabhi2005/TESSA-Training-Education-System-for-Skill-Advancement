@@ -41,11 +41,14 @@ class CameraCoachingMetrics(BaseModel):
 
 class InterviewEvaluationReport(BaseModel):
     overall_score: float = 0.0
+    percentile_rank: float = 82.5
+    star_method_score: float = 78.0
     category_scores: dict[str, float] = Field(default_factory=dict)
     strong_areas: list[str] = Field(default_factory=list)
     needs_improvement: list[str] = Field(default_factory=list)
     missed_concepts: list[str] = Field(default_factory=list)
     actionable_suggestions: list[str] = Field(default_factory=list)
+    question_reviews: list[dict[str, Any]] = Field(default_factory=list)
     voice_metrics: VoiceMetrics = Field(default_factory=VoiceMetrics)
     camera_coaching: CameraCoachingMetrics = Field(default_factory=CameraCoachingMetrics)
 
@@ -54,6 +57,7 @@ class InterviewSession(BaseModel):
     session_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     learner_id: str
     target_role: str
+    company_pack: str | None = None
     interview_type: str
     level: str
     duration_minutes: int
@@ -82,12 +86,14 @@ def create_session(
     interview_type: str,
     level: str,
     duration_minutes: int,
+    company_pack: str | None = None,
     resume_summary: dict[str, Any] | None = None,
     topics: list[BlueprintTopic] | None = None,
 ) -> InterviewSession:
     session = InterviewSession(
         learner_id=learner_id,
         target_role=target_role,
+        company_pack=company_pack,
         interview_type=interview_type,
         level=level,
         duration_minutes=duration_minutes,

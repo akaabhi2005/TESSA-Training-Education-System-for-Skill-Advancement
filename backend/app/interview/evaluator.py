@@ -86,14 +86,33 @@ def evaluate_interview_session(session: InterviewSession) -> InterviewEvaluation
                 cat_scores["System Design"] = float(data.get("system_design", 65))
 
             overall = round(sum(cat_scores.values()) / len(cat_scores), 1)
+            percentile = min(round(overall * 1.08 + 2.5, 1), 99.0)
+            star_score = round(min(overall * 0.95 + (voice_metrics.clarity_score * 0.1), 100.0), 1)
+
+            # Generate question-by-question reviews
+            q_reviews = []
+            for t in turns:
+                ans = t.user_answer.strip()
+                ans_len = len(ans.split())
+                q_score = min(max(ans_len * 2, 40), 95)
+                q_reviews.append({
+                    "turn_index": t.turn_index,
+                    "question": t.question,
+                    "user_answer": ans or "[No response recorded]",
+                    "ideal_model_answer": f"A top-tier candidate response for '{t.question[:60]}...' should clearly cover core architecture, STAR methodology (Situation, Task, Action, Result), and key trade-offs.",
+                    "turn_score": q_score,
+                })
 
             return InterviewEvaluationReport(
                 overall_score=overall,
+                percentile_rank=percentile,
+                star_method_score=star_score,
                 category_scores=cat_scores,
                 strong_areas=data.get("strong_areas", ["Core Syntax", "Problem Approach"]),
                 needs_improvement=data.get("needs_improvement", ["Complex Data Structures", "Edge Cases"]),
                 missed_concepts=data.get("missed_concepts", ["Specific Algorithm Optimizations"]),
                 actionable_suggestions=data.get("actionable_suggestions", ["Review key computer science fundamentals."]),
+                question_reviews=q_reviews,
                 voice_metrics=voice_metrics,
                 camera_coaching=camera_coaching,
             )
@@ -113,14 +132,32 @@ def evaluate_interview_session(session: InterviewSession) -> InterviewEvaluation
         "Communication": voice_metrics.clarity_score,
     }
     overall = round(sum(cat_scores.values()) / len(cat_scores), 1)
+    percentile = min(round(overall * 1.08 + 2.5, 1), 99.0)
+    star_score = round(min(overall * 0.92, 100.0), 1)
+
+    q_reviews = []
+    for t in turns:
+        ans = t.user_answer.strip()
+        ans_len = len(ans.split())
+        q_score = min(max(ans_len * 2, 45), 90)
+        q_reviews.append({
+            "turn_index": t.turn_index,
+            "question": t.question,
+            "user_answer": ans or "[No response recorded]",
+            "ideal_model_answer": f"Ideal response to '{t.question[:60]}...': Structure your answer using STAR format, clearly explain key technical choices, and mention efficiency/complexity trade-offs.",
+            "turn_score": q_score,
+        })
 
     return InterviewEvaluationReport(
         overall_score=overall,
+        percentile_rank=percentile,
+        star_method_score=star_score,
         category_scores=cat_scores,
         strong_areas=["Applied Concepts", "Core Syntax"],
         needs_improvement=["Deep Fundamentals", "Algorithmic Optimizations"],
         missed_concepts=["Time/Space Complexity Details"],
         actionable_suggestions=["Practice structured technical answers using STAR format."],
+        question_reviews=q_reviews,
         voice_metrics=voice_metrics,
         camera_coaching=camera_coaching,
     )

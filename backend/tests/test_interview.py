@@ -101,3 +101,44 @@ def test_job_matcher():
         first_job = data["jobs"][0]
         assert "match_percentage" in first_job
         assert first_job["match_percentage"] >= 45.0
+
+
+def test_company_placement_pack_interview():
+    with TestClient(app) as client:
+        start_res = client.post(
+            "/api/interview/start",
+            json={
+                "learner_id": "test-candidate-amazon",
+                "target_role": "Software Development Engineer (SDE)",
+                "company_pack": "Amazon SDE-1",
+                "interview_type": "Technical Round",
+                "level": "Fresher",
+                "duration_minutes": 30,
+            },
+        )
+        assert start_res.status_code == 200
+        data = start_res.json()
+        assert data["company_pack"] == "Amazon SDE-1"
+        assert len(data["blueprint_topics"]) > 0
+
+        # Turn answer
+        resp_res = client.post(
+            "/api/interview/respond",
+            json={
+                "session_id": data["session_id"],
+                "user_answer": "In my previous project, customer obsession was key. Um, we basically optimized the REST API latency using Redis cache.",
+                "audio_duration_seconds": 15.0,
+            },
+        )
+        assert resp_res.status_code == 200
+
+        # End interview & verify percentile + question reviews
+        end_res = client.post(f"/api/interview/end?session_id={data['session_id']}")
+        assert end_res.status_code == 200
+        end_data = end_res.json()
+        report = end_data["report"]
+        assert "percentile_rank" in report
+        assert "star_method_score" in report
+        assert "question_reviews" in report
+        assert len(report["question_reviews"]) > 0
+

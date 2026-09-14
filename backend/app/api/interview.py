@@ -32,6 +32,7 @@ jobs_router = APIRouter(prefix="/api/jobs", tags=["jobs"])
 class StartInterviewRequest(BaseModel):
     learner_id: str
     target_role: str = "Java Backend Developer"
+    company_pack: str | None = None
     interview_type: str = "Technical"
     level: str = "Fresher"
     duration_minutes: int = 30
@@ -97,11 +98,12 @@ async def upload_and_parse_resume(
 def start_interview(req: StartInterviewRequest) -> dict[str, Any]:
     """Initialize a mock interview session and return opening question."""
     profile = store.get_profile(req.learner_id)
-    topics = get_blueprint(req.target_role, req.interview_type)
+    topics = get_blueprint(req.target_role, req.interview_type, company_pack=req.company_pack)
     
     session = create_session(
         learner_id=req.learner_id,
         target_role=req.target_role,
+        company_pack=req.company_pack,
         interview_type=req.interview_type,
         level=req.level,
         duration_minutes=req.duration_minutes,
@@ -124,6 +126,7 @@ def start_interview(req: StartInterviewRequest) -> dict[str, Any]:
     return {
         "session_id": session.session_id,
         "target_role": session.target_role,
+        "company_pack": session.company_pack,
         "interview_type": session.interview_type,
         "level": session.level,
         "duration_minutes": session.duration_minutes,
