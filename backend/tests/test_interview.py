@@ -1,6 +1,7 @@
-"""Unit and integration tests for Placement Hub."""
-
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None
 from fastapi.testclient import TestClient
 
 from app.main import app

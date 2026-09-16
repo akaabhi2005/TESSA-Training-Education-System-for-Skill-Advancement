@@ -32,10 +32,11 @@ class VoiceMetrics(BaseModel):
 
 
 class CameraCoachingMetrics(BaseModel):
-    facing_camera_percentage: float = 85.0
-    looking_away_count: int = 2
-    excessive_head_movement_count: int = 1
-    posture_consistency_percentage: float = 90.0
+    camera_enabled: bool = True
+    facing_camera_percentage: float = 0.0
+    looking_away_count: int = 0
+    excessive_head_movement_count: int = 0
+    posture_consistency_percentage: float = 0.0
     coaching_tips: list[str] = Field(default_factory=list)
 
 

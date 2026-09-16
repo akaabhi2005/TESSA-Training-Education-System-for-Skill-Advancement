@@ -16,13 +16,14 @@ def process_visual_coaching(raw_events: list[dict[str, Any]]) -> CameraCoachingM
     """Aggregate browser-side MediaPipe coaching signals."""
     if not raw_events:
         return CameraCoachingMetrics(
-            facing_camera_percentage=88.0,
-            looking_away_count=2,
-            excessive_head_movement_count=1,
-            posture_consistency_percentage=92.0,
+            camera_enabled=False,
+            facing_camera_percentage=0.0,
+            looking_away_count=0,
+            excessive_head_movement_count=0,
+            posture_consistency_percentage=0.0,
             coaching_tips=[
-                "Good camera engagement overall.",
-                "Maintain steady eye contact with the camera when explaining key architectural concepts."
+                "Camera was not enabled during this session.",
+                "Enable your camera to receive real-time eye contact, posture, and non-verbal coaching feedback."
             ]
         )
 

@@ -5913,12 +5913,31 @@ function renderPerformanceReport(report) {
       </div>`;
   }
 
-  const strongHtml = (report.strong_areas || []).map(s => `<li style="color:var(--mint);margin-bottom:4px;">✓ ${esc(s)}</li>`).join('');
-  const weakHtml = (report.needs_improvement || []).map(w => `<li style="color:var(--solar);margin-bottom:4px;">⚠ ${esc(w)}</li>`).join('');
+  const strongHtml = (report.strong_areas && report.strong_areas.length > 0)
+    ? report.strong_areas.map(s => `<li style="color:var(--mint);margin-bottom:4px;">✓ ${esc(s)}</li>`).join('')
+    : `<li style="color:var(--muted);font-size:12px;">No strong performance demonstrated in this session.</li>`;
+
+  const weakHtml = (report.needs_improvement && report.needs_improvement.length > 0)
+    ? report.needs_improvement.map(w => `<li style="color:var(--solar);margin-bottom:4px;">⚠ ${esc(w)}</li>`).join('')
+    : `<li style="color:var(--mint);font-size:12px;">No critical weaknesses detected.</li>`;
   
   const voice = report.voice_metrics || {};
+  const voicePace = voice.speaking_pace_wpm ? Math.round(voice.speaking_pace_wpm) : 0;
+  const voiceFillers = voice.filler_words_count ?? 0;
+  const voiceFeedback = voice.structure_feedback || (voice.total_words > 0 ? 'Good articulation.' : 'No spoken audio detected; typed text evaluated.');
+
   const camera = report.camera_coaching || {};
-  const cameraTips = (camera.coaching_tips || []).map(t => `<li>• ${esc(t)}</li>`).join('');
+  const isCameraActive = camera.camera_enabled !== false && ((camera.facing_camera_percentage || 0) > 0 || (camera.posture_consistency_percentage || 0) > 0);
+  const cameraEyeContact = isCameraActive ? `${Math.round(camera.facing_camera_percentage || 0)}%` : 'Off';
+  const cameraPosture = isCameraActive ? `${Math.round(camera.posture_consistency_percentage || 0)}%` : 'Off';
+  const cameraTips = (camera.coaching_tips && camera.coaching_tips.length > 0)
+    ? camera.coaching_tips.map(t => `<li>• ${esc(t)}</li>`).join('')
+    : (isCameraActive
+        ? '<li>• Maintained appropriate posture and focus during the assessment.</li>'
+        : '<li>• Camera was inactive during this interview. Enable webcam in future rounds for live attention and posture telemetry.</li>');
+
+  const overallScore = Math.round(report.overall_score ?? 0);
+  const percentileRank = report.percentile_rank !== undefined && report.percentile_rank !== null ? report.percentile_rank : 0;
   const qReviews = report.question_reviews || [];
 
   let qReviewsHtml = '';
@@ -5933,6 +5952,10 @@ function renderPerformanceReport(report) {
         <div style="font-size:12.5px;color:var(--muted);background:rgba(255,255,255,.02);padding:10px;border-radius:6px;margin-bottom:8px;">
           <b style="color:var(--text);">Your Response:</b> ${esc(qr.user_answer)}
         </div>
+        ${qr.feedback ? `
+        <div style="font-size:12px;color:var(--solar);background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);padding:10px;border-radius:6px;margin-bottom:8px;">
+          <b>📝 Answer Critique:</b> ${esc(qr.feedback)}
+        </div>` : ''}
         <div style="font-size:12px;color:var(--mint);background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);padding:10px;border-radius:6px;">
           <b>💡 Ideal Model Answer:</b> ${esc(qr.ideal_model_answer)}
         </div>
@@ -5950,11 +5973,11 @@ function renderPerformanceReport(report) {
       <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
         <button onclick="window.print()" class="btn-secondary" style="font-size:12px;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">📥 Print / Export PDF</button>
         <div style="text-align:center;background:rgba(8,12,21,.6);padding:12px 20px;border-radius:10px;border:1px solid var(--line-soft);">
-          <div style="font-size:32px;font-weight:800;color:var(--cyan);font-family:var(--display);">${Math.round(report.overall_score || 72)}/100</div>
+          <div style="font-size:32px;font-weight:800;color:var(--cyan);font-family:var(--display);">${overallScore}/100</div>
           <div style="font-size:11px;color:var(--muted);">Overall Score</div>
         </div>
         <div style="text-align:center;background:rgba(8,12,21,.6);padding:12px 20px;border-radius:10px;border:1px solid var(--line-soft);">
-          <div style="font-size:32px;font-weight:800;color:var(--mint);font-family:var(--display);">${report.percentile_rank || 85.0}%</div>
+          <div style="font-size:32px;font-weight:800;color:var(--mint);font-family:var(--display);">${percentileRank}%</div>
           <div style="font-size:11px;color:var(--muted);">Percentile Rank</div>
         </div>
       </div>
@@ -5972,14 +5995,14 @@ function renderPerformanceReport(report) {
             <div class="eyebrow" style="color:var(--mint);">Strong Areas</div>
             <span style="font-size:11px;color:var(--mint);font-weight:600;">✓ Core Highlights</span>
           </div>
-          <ul style="list-style:none;padding:0;margin:0;font-size:13px;">${strongHtml || '<li>✓ Fundamental syntax</li>'}</ul>
+          <ul style="list-style:none;padding:0;margin:0;font-size:13px;">${strongHtml}</ul>
         </div>
         <div class="report-card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
             <div class="eyebrow" style="color:var(--solar);">Needs Improvement</div>
             <span style="font-size:11px;color:var(--solar);font-weight:600;">⚠ Action Areas</span>
           </div>
-          <ul style="list-style:none;padding:0;margin:0;font-size:13px;">${weakHtml || '<li>⚠ Advanced algorithms</li>'}</ul>
+          <ul style="list-style:none;padding:0;margin:0;font-size:13px;">${weakHtml}</ul>
         </div>
       </div>
     </div>
@@ -5989,21 +6012,21 @@ function renderPerformanceReport(report) {
       <div class="report-card">
         <div class="eyebrow" style="color:var(--violet);margin-bottom:8px;">Speech & Communication Metrics</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
-          <div class="mini-stat"><b>${voice.speaking_pace_wpm || 130}</b><span>Words / Min (WPM)</span></div>
-          <div class="mini-stat"><b>${voice.filler_words_count || 0}</b><span>Filler Words</span></div>
+          <div class="mini-stat"><b>${voicePace > 0 ? voicePace : 'N/A'}</b><span>Words / Min (WPM)</span></div>
+          <div class="mini-stat"><b>${voiceFillers}</b><span>Filler Words</span></div>
         </div>
-        <p style="font-size:12.5px;color:var(--muted);line-height:1.5;">${esc(voice.structure_feedback || 'Good articulation.')}</p>
+        <p style="font-size:12.5px;color:var(--muted);line-height:1.5;">${esc(voiceFeedback)}</p>
       </div>
 
       <!-- Camera & Visual Coaching Feedback -->
       <div class="report-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
           <div class="eyebrow" style="color:var(--cyan);">Visual & Posture Coaching</div>
-          <span style="font-size:10px;background:rgba(81,221,255,.1);color:var(--cyan);padding:2px 8px;border-radius:4px;font-weight:600;">Coaching HUD</span>
+          <span style="font-size:10px;background:${isCameraActive ? 'rgba(81,221,255,.1)' : 'rgba(255,255,255,.08)'};color:${isCameraActive ? 'var(--cyan)' : 'var(--muted)'};padding:2px 8px;border-radius:4px;font-weight:600;">${isCameraActive ? 'Coaching HUD' : 'Camera Inactive'}</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
-          <div class="mini-stat"><b>${camera.facing_camera_percentage || 88}%</b><span>Camera Eye-Contact</span></div>
-          <div class="mini-stat"><b>${camera.posture_consistency_percentage || 90}%</b><span>Posture Steady</span></div>
+          <div class="mini-stat"><b style="${!isCameraActive ? 'color:var(--muted);' : ''}">${cameraEyeContact}</b><span>Camera Eye-Contact</span></div>
+          <div class="mini-stat"><b style="${!isCameraActive ? 'color:var(--muted);' : ''}">${cameraPosture}</b><span>Posture Steady</span></div>
         </div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--muted);line-height:1.5;">${cameraTips}</ul>
       </div>

@@ -25,9 +25,9 @@ def extract_skill_gaps(session: InterviewSession) -> list[dict[str, Any]]:
         if not clean_name:
             continue
         
-        # Calculate current proficiency (30% to 50% for weak skills)
-        score = report.category_scores.get("Technical Knowledge", 50.0)
-        current_pct = max(min(int(score * 0.6), 55), 25)
+        # Calculate current proficiency from actual performance
+        score = report.category_scores.get("Technical Knowledge", report.overall_score)
+        current_pct = max(min(int(score * 0.6), 55), 0)
 
         gaps.append({
             "skill_name": clean_name,
