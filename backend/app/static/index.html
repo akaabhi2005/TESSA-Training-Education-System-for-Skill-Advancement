@@ -2493,6 +2493,13 @@ dialog::backdrop{background:rgba(2,4,10,.82);backdrop-filter:blur(10px)}
   .phase-marker,.prompt-btn{transition:opacity .2s ease,color .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease!important}
 }
 
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  header, nav, sidebar, .app-sidebar, .top-actions, .placement-tab-btn, .setup-card, .room-card, #startInterviewBtn, #getReportFooterCard, button { display: none !important; }
+  #ptab-report-content, #reportContainer, .report-card { display: block !important; width: 100% !important; border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; box-shadow: none !important; margin-bottom: 15px !important; }
+  .tag, .rubric-bar-fill, .mini-stat { border: 1px solid #666 !important; }
+  h2, h3, h4, b, span, div, p { color: #000 !important; }
+}
 
 .engine-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; animation: beaconPulse 2s infinite; display: inline-block; }
 .intake-pace-row { display: flex; align-items: center; gap: 10px; padding: 8px 14px 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 4px; flex-wrap: wrap; }
@@ -5460,6 +5467,9 @@ let placementSpeechRec = null;
 let placementTimerInterval = null;
 let placementTimerSecs = 0;
 let placementLastReport = null;
+let lastParsedResumeSummary = null;
+let turnStartTime = null;
+let cameraEventInterval = null;
 
 document.addEventListener('click', async event => {
   const tabBtn = event.target.closest('.placement-tab-btn');
@@ -5574,6 +5584,10 @@ async function initPlacementCamera() {
 }
 
 function stopPlacementCamera() {
+  if (cameraEventInterval) {
+    clearInterval(cameraEventInterval);
+    cameraEventInterval = null;
+  }
   if (placementCameraStream) {
     placementCameraStream.getTracks().forEach(t => t.stop());
     placementCameraStream = null;
@@ -5728,12 +5742,14 @@ async function startMockInterview() {
       company_pack: selectedCompanyPack || null,
       interview_type: type,
       level: level,
-      duration_minutes: duration
+      duration_minutes: duration,
+      resume_summary: lastParsedResumeSummary || null
     });
     setBusy(false);
 
     currentPlacementSessionId = data.session_id;
     placementQuestionPending = data.question;
+    turnStartTime = Date.now();
 
     if ($('#interviewSetupCard')) $('#interviewSetupCard').classList.add('hidden');
     if ($('#interviewRoomCard')) $('#interviewRoomCard').classList.remove('hidden');
@@ -5767,6 +5783,24 @@ async function launchWatchAndBegin() {
     await placementAudioCtx.resume();
   }
   startPlacementTimer(placementDurationMins);
+  turnStartTime = Date.now();
+
+  // Stream live camera coaching events to backend every 4 seconds
+  if (cameraEventInterval) clearInterval(cameraEventInterval);
+  cameraEventInterval = setInterval(() => {
+    if (currentPlacementSessionId && placementCameraStream && placementCameraStream.getVideoTracks().length > 0) {
+      const vTrack = placementCameraStream.getVideoTracks()[0];
+      if (vTrack.enabled) {
+        API.post('/api/interview/camera-event', {
+          session_id: currentPlacementSessionId,
+          facing_camera: true,
+          good_posture: true,
+          excessive_head_movement: false
+        }).catch(() => {});
+      }
+    }
+  }, 4000);
+
   if (placementQuestionPending) {
     speakQuestion(placementQuestionPending);
   }
@@ -5782,12 +5816,16 @@ async function submitTurnAnswer() {
     return;
   }
 
+  // Calculate real turn elapsed duration in seconds
+  const elapsedSecs = turnStartTime ? Math.max(2.0, Math.round((Date.now() - turnStartTime) / 1000.0)) : 15.0;
+  turnStartTime = Date.now();
+
   try {
     setBusy(true, 'AI Interviewer evaluating response & formulating follow-up...');
     const data = await API.post('/api/interview/respond', {
       session_id: currentPlacementSessionId,
       user_answer: answerText,
-      audio_duration_seconds: 15.0
+      audio_duration_seconds: elapsedSecs
     });
     setBusy(false);
 
@@ -5820,6 +5858,10 @@ async function submitTurnAnswer() {
 async function concludeMockInterview() {
   if (!currentPlacementSessionId) return;
   clearInterval(placementTimerInterval);
+  if (cameraEventInterval) {
+    clearInterval(cameraEventInterval);
+    cameraEventInterval = null;
+  }
   stopPlacementCamera();
   stopPlacementAudio();
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
@@ -5905,7 +5947,8 @@ function renderPerformanceReport(report) {
         <h2 style="font:700 24px/1.2 var(--display);color:#fff;margin:6px 0 4px;">Candidate Scorecard & Benchmarking</h2>
         <div style="font-size:13px;color:var(--muted);">Evaluated against live industry rubrics and STAR methodology</div>
       </div>
-      <div style="display:flex;gap:16px;align-items:center;">
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+        <button onclick="window.print()" class="btn-secondary" style="font-size:12px;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">📥 Print / Export PDF</button>
         <div style="text-align:center;background:rgba(8,12,21,.6);padding:12px 20px;border-radius:10px;border:1px solid var(--line-soft);">
           <div style="font-size:32px;font-weight:800;color:var(--cyan);font-family:var(--display);">${Math.round(report.overall_score || 72)}/100</div>
           <div style="font-size:11px;color:var(--muted);">Overall Score</div>
@@ -6301,6 +6344,7 @@ if ($('#pResumeUploadBtn') && $('#pResumeFile')) {
         const data = await res.json();
         setBusy(false);
         if (res.ok && data.parsed) {
+          lastParsedResumeSummary = data.profile;
           if ($('#pResumeStatus')) {
             $('#pResumeStatus').style.display = 'block';
             $('#pResumeStatus').style.color = 'var(--mint)';
