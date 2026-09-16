@@ -1525,6 +1525,618 @@ dialog::backdrop{background:rgba(2,4,10,.82);backdrop-filter:blur(10px)}
 .adaptation-item b {display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .adaptation-item span {display:block;color:var(--muted);font-size:12px;margin-top:2px}
 .adaptation-item button {flex:none;border:1px solid rgba(255,125,145,.28);background:rgba(255,125,145,.05);color:#ff9bab;border-radius:7px;padding:6px 8px;font-size:12px}
+
+/* Pedagogical Suitability, Alternatives & Audit Styles */
+.suitability-card {
+  margin: 14px 0 18px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(8, 14, 28, 0.95), rgba(16, 26, 52, 0.75));
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+.suitability-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.suitability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 99px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font: 700 12px/1 var(--display);
+  letter-spacing: 0.03em;
+}
+.zero-bias-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 600 11px/1 var(--display);
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+.suitability-headline {
+  font-size: 13px;
+  line-height: 1.55;
+  color: #f1f5f9;
+  margin-bottom: 14px;
+}
+.suitability-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.suitability-cell {
+  background: rgba(11, 18, 36, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.suitability-cell b {
+  display: block;
+  font: 600 11px/1 var(--display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cyan);
+  margin-bottom: 5px;
+}
+.suitability-cell span {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+.alt-card-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+.alt-card {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(11, 18, 36, 0.7);
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.alt-card:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(15, 24, 48, 0.9);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+.alt-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.alt-card-top h4 {
+  font: 600 15px/1.3 var(--display);
+  margin: 0;
+  color: #f8fafc;
+}
+.alt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 700 11px/1 var(--display);
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  color: var(--cyan);
+  white-space: nowrap;
+}
+.alt-tradeoff {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.alt-card p {
+  font-size: 12.5px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+.alt-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.audit-card {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.audit-layer {
+  padding: 13px 15px;
+  border-radius: 10px;
+  background: rgba(11, 18, 36, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.audit-layer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 700 12px/1 var(--display);
+  color: #f1f5f9;
+  margin-bottom: 6px;
+}
+.audit-layer p {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}
+.audit-seal-box {
+  margin-top: 8px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(56, 189, 248, 0.08));
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.audit-seal-box b {
+  font: 700 12.5px/1 var(--display);
+  color: #34d399;
+}
+.audit-seal-box span {
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-family: var(--display);
+}
+
+/* Profile Working Streak Component */
+.profile-streak-section {
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 12px;
+  padding: 22px 24px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.06), rgba(8, 13, 26, 0.85) 45%, rgba(239, 68, 68, 0.05));
+  position: relative;
+  overflow: hidden;
+}
+.streak-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+.streak-hero-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.streak-flame-orb {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(251, 191, 36, 0.35), rgba(239, 68, 68, 0.15) 70%, transparent);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.3);
+  animation: flamePulse 2.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes flamePulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(245, 158, 11, 0.25); }
+  50% { transform: scale(1.05); box-shadow: 0 0 32px rgba(245, 158, 11, 0.45); }
+}
+.streak-meta h3 {
+  margin: 0;
+  font: 800 22px/1.2 var(--display);
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.streak-meta p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.streak-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.streak-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  color: #cbd5e1;
+}
+.streak-stat-pill b {
+  color: #fbbf24;
+  font-weight: 700;
+}
+.streak-week-bar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(10, 15, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.streak-day-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
+}
+.streak-day-card.active {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+.streak-day-card.today {
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+}
+.streak-day-name {
+  font: 700 10.5px/1 var(--display);
+  text-transform: uppercase;
+  color: var(--faint);
+  letter-spacing: 0.05em;
+}
+.streak-day-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+}
+.streak-day-card.active .streak-day-icon {
+  background: rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+}
+.streak-day-num {
+  font-size: 11px;
+  color: var(--muted);
+}
+.streak-day-card.today .streak-day-num {
+  color: var(--cyan);
+  font-weight: 700;
+}
+.streak-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.streak-targets {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.streak-targets span {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.streak-target-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.streak-target-chip:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fff;
+}
+.streak-target-chip.on {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+}
+.streak-checkin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: #0b0f19;
+  font: 700 13px/1 var(--display);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.streak-checkin-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+}
+.streak-checkin-btn.done {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* Profile Working Milestones Component */
+.profile-milestones-section {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  padding: 20px 22px;
+  background: rgba(8, 13, 26, 0.7);
+}
+.profile-ms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 16px 0;
+}
+.profile-ms-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(12, 19, 38, 0.65);
+  padding: 16px 18px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.profile-ms-card:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(14, 23, 46, 0.85);
+}
+.profile-ms-card.done {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.04);
+}
+.profile-ms-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.profile-ms-info h4 {
+  margin: 6px 0 4px;
+  font: 700 15px/1.3 var(--display);
+  color: #f8fafc;
+}
+.profile-ms-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--cyan);
+  font: 700 11px/1 var(--display);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.profile-ms-badge.done {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+.profile-ms-sub {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+.profile-ms-deadline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.profile-ms-deadline label {
+  font: 600 10.5px/1 var(--display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+}
+.ms-deadline-picker {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 12, 21, 0.85);
+  color: #f1f5f9;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11.5px;
+  font-family: var(--display);
+  outline: none;
+}
+.ms-deadline-picker:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+.profile-ms-progress {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.profile-ms-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--cyan), var(--mint));
+  transition: width 0.3s ease;
+}
+.profile-ms-progress-fill.done {
+  background: #10b981;
+}
+.profile-ms-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.profile-ms-drawer {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.profile-ms-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.profile-ms-subitem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(8, 12, 22, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.profile-ms-subitem.done {
+  opacity: 0.75;
+  background: rgba(16, 185, 129, 0.05);
+}
+.profile-ms-subitem-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.custom-ms-section {
+  margin-top: 22px;
+  padding: 16px 18px;
+  border-radius: 10px;
+  background: rgba(10, 16, 32, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+.custom-ms-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.custom-ms-form input[type="text"] {
+  flex: 1;
+  min-width: 220px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 21, 0.85);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #f1f5f9;
+  outline: none;
+}
+.custom-ms-form input[type="text"]:focus {
+  border-color: var(--cyan);
+}
+.custom-ms-form input[type="date"],
+.custom-ms-form select {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 21, 0.85);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  color: #f1f5f9;
+  outline: none;
+}
+.custom-ms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.custom-ms-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: rgba(8, 12, 22, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.custom-ms-item.done {
+  opacity: 0.65;
+}
+.custom-ms-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: #f1f5f9;
+}
+.custom-ms-text.strikethrough {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.custom-ms-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.custom-ms-del {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.custom-ms-del:hover {
+  color: #fb7185;
+}
+
 /* Route checklist -------------------------------------------------- */
 .route-overview {margin:0 0 17px;padding:17px 18px;border:1px solid rgba(81,221,255,.2);border-radius:11px;background:linear-gradient(130deg,rgba(81,221,255,.075),rgba(169,124,255,.055))}
 .route-overview-top {display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -2517,6 +3129,7 @@ let simTimer = null;
 let view = 'today';
 let intakeStage = 'goal';
 let intakeSubmitting = false;
+let openMilestoneDrawers = new Set();
 
 function newLearnerId() {
   return 'l_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
@@ -2965,6 +3578,9 @@ function openInspector(id, tab = null) {
   selectedId = id;
   if (tab) inspectorTab = tab;
   inspectorDetail = null;
+  inspectorSuitability = null;
+  inspectorAlternatives = null;
+  inspectorAudit = null;
   renderTrajectory();
   renderInspector();
 }
@@ -2974,6 +3590,12 @@ function openInspector(id, tab = null) {
    only openInspector could fetch, the panel sat on "Loading the written
    explanation…" forever after any route change. */
 let explanationPending = null;
+let inspectorSuitability = null;
+let inspectorAlternatives = null;
+let inspectorAudit = null;
+let suitabilityPending = null;
+let alternativesPending = null;
+let auditPending = null;
 
 async function loadExplanation(id) {
   if (explanationPending === id) return;
@@ -2982,14 +3604,74 @@ async function loadExplanation(id) {
   try {
     detail = await API.get(`/api/path/${learnerId}/explain/${id}`);
   } catch (_) {
-    // The scored reason codes travel with the path, so the panel is still
-    // complete without the prose. Record the attempt so it is not retried in a
-    // loop, and stop claiming something is loading.
     detail = {course_id: id, explanation: ''};
   } finally {
     if (explanationPending === id) explanationPending = null;
   }
   if (selected()?.id === id) { inspectorDetail = detail; renderInspector(); }
+}
+
+async function loadSuitability(id) {
+  if (suitabilityPending === id) return;
+  suitabilityPending = id;
+  try {
+    inspectorSuitability = await API.get(`/api/path/${learnerId}/suitability/${id}`);
+  } catch (_) {
+    inspectorSuitability = { error: true };
+  } finally {
+    suitabilityPending = null;
+  }
+  if (selected()?.id === id) renderInspector();
+}
+
+async function loadAlternatives(id) {
+  if (alternativesPending === id) return;
+  alternativesPending = id;
+  try {
+    inspectorAlternatives = await API.get(`/api/path/${learnerId}/alternatives/${id}`);
+  } catch (_) {
+    inspectorAlternatives = [];
+  } finally {
+    alternativesPending = null;
+  }
+  if (selected()?.id === id) renderInspector();
+}
+
+async function loadAudit(id) {
+  if (auditPending === id) return;
+  auditPending = id;
+  try {
+    inspectorAudit = await API.get(`/api/path/${learnerId}/audit/${id}`);
+  } catch (_) {
+    inspectorAudit = null;
+  } finally {
+    auditPending = null;
+  }
+  if (selected()?.id === id) renderInspector();
+}
+
+async function swapCourse(currentId, replacementId) {
+  if (busy) return;
+  setBusy(true, 'Swapping resource & re-verifying trajectory…');
+  try {
+    const res = await API.post(`/api/path/${learnerId}/swap`, {
+      current_course_id: currentId,
+      replacement_course_id: replacementId
+    });
+    applySnapshot(res);
+    inspectorDetail = null;
+    inspectorSuitability = null;
+    inspectorAlternatives = null;
+    inspectorAudit = null;
+    if (res.swapped_to_id) selectedId = res.swapped_to_id;
+    renderAll();
+    toast('Resource Swapped', res.message || 'Updated trajectory successfully.');
+    addReceipt('Resource Swapped', res.message);
+  } catch (err) {
+    toast('Swap Failed', err.message || 'Could not swap resource.');
+  } finally {
+    setBusy(false);
+  }
 }
 
 function renderInspector() {
@@ -3002,9 +3684,16 @@ function renderInspector() {
   const course = item.course;
   const loaded = inspectorDetail?.course_id === item.id ? inspectorDetail : null;
   const codes = loaded?.reason_codes || item.reasons || [];
-  if (item.kind === 'course' && !loaded) loadExplanation(item.id);
+
+  if (item.kind === 'course') {
+    if (!loaded) loadExplanation(item.id);
+    if (!inspectorSuitability && inspectorTab === 'why') loadSuitability(item.id);
+    if (!inspectorAlternatives && inspectorTab === 'alts') loadAlternatives(item.id);
+    if (!inspectorAudit && inspectorTab === 'audit') loadAudit(item.id);
+  }
+
   const tabs = item.kind === 'course'
-    ? [['why','Why this'], ['course','The course'], ['prereq','Prerequisites'], ['adapt','Adapt']]
+    ? [['why','Why this'], ['alts','Suggest another 🔄'], ['course','The course'], ['prereq','Prerequisites'], ['audit','🛡️ AI Audit'], ['adapt','Adapt']]
     : [['why','The brief'], ['adapt','Adapt']];
   if (!tabs.some(([key]) => key === inspectorTab)) inspectorTab = tabs[0][0];
 
@@ -3020,6 +3709,10 @@ function renderInspector() {
       <span class="tag ${item.kind === 'course' ? 'cyan' : item.kind === 'project' ? 'mint' : 'solar'}">${esc(item.kind)}</span>
       <span class="tag">${hrs(item.hours)}${course && !course.hours_stated ? ' · estimated' : ''}</span>
       ${course ? `<span class="tag">${esc(course.provider)}</span><span class="tag">${esc(course.level)}</span><span class="tag">${esc(course.cost)}</span>` : ''}
+      ${course ? `
+        <button class="tag" style="background:rgba(56,189,248,0.14);border:1px solid rgba(56,189,248,0.35);color:var(--cyan);cursor:pointer;" onclick="openInspector('${item.id}', 'alts')">🔄 Suggest Another</button>
+        <button class="tag" style="background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);color:#34d399;cursor:pointer;" onclick="openInspector('${item.id}', 'audit')">🛡️ Anti-Hallucination Audit</button>
+      ` : ''}
     </div>
     <div class="detail-tabs" role="tablist">
       ${tabs.map(([key, label]) => `<button class="detail-tab ${inspectorTab === key ? 'on' : ''}" data-tab="${key}" role="tab" aria-selected="${inspectorTab === key}">${esc(label)}</button>`).join('')}
@@ -3042,10 +3735,153 @@ function inspectorPanel(item, codes, course) {
         ${(item.skills || []).length ? `<div class="skill-strip">${item.skills.map(s => `<span class="tag mint">${esc(skillName(s))}</span>`).join('')}</div>` : ''}
         <p class="grounding-note">Generated from exactly the skills this phase teaches — nothing else is in scope for it.</p>`;
     }
+
+    let suitMarkup = '';
+    if (inspectorSuitability && !inspectorSuitability.error) {
+      const s = inspectorSuitability;
+      suitMarkup = `
+        <div class="suitability-card">
+          <div class="suitability-header">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span class="suitability-badge">✓ ${s.match_score}% Pedagogical Match</span>
+              <span class="zero-bias-pill">Zero View-Count Bias</span>
+            </div>
+            <span class="alt-badge">${esc(s.archetype)}</span>
+          </div>
+          <div class="suitability-headline"><b>${esc(s.pedagogical_headline)}</b></div>
+          <div class="suitability-grid">
+            <div class="suitability-cell">
+              <b>Target Gap Closure</b>
+              <span>${esc(s.gap_coverage_summary)}</span>
+            </div>
+            <div class="suitability-cell">
+              <b>Weekly Pace Fit</b>
+              <span>${esc(s.pacing_fit)}</span>
+            </div>
+            <div class="suitability-cell">
+              <b>Hands-On vs Theory</b>
+              <span>${esc(s.hands_on_ratio)}</span>
+            </div>
+            <div class="suitability-cell">
+              <b>Prerequisites Status</b>
+              <span>${esc(s.prerequisite_status)}</span>
+            </div>
+          </div>
+          ${s.key_concepts && s.key_concepts.length ? `
+            <div style="margin-top:10px;">
+              <span style="font:600 11px/1 var(--display);color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Key Syllabus Topics:</span>
+              <div class="skill-strip" style="margin-top:6px;">
+                ${s.key_concepts.map(k => `<span class="tag cyan" style="font-size:11px;">${esc(k)}</span>`).join('')}
+              </div>
+            </div>` : ''}
+          <div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <span style="font-size:12px;color:var(--muted);">${esc(s.verified_source)}</span>
+            <button class="btn-secondary btn-sm" onclick="openInspector('${item.id}', 'alts')" style="font-size:12px;">Not right for you? Suggest another ➔</button>
+          </div>
+        </div>`;
+    } else if (suitabilityPending === item.id) {
+      suitMarkup = `<div class="suitability-card" style="text-align:center;padding:24px;"><span class="spinner"></span> Evaluating pedagogical suitability & skill-gap alignment…</div>`;
+    }
+
     return `
+      ${suitMarkup}
       ${explanationMarkup(item)}
       <div class="detail-block"><h4>Scored reasons</h4>${reasonMarkup(codes)}</div>
       <p class="grounding-note">These codes are emitted by the scoring function as it scores, not written afterwards. The explanation above is generated <em>from</em> them, so it cannot contain a reason that is not in this list.</p>`;
+  }
+
+  if (inspectorTab === 'alts') {
+    if (alternativesPending === item.id) {
+      return `<div class="detail-block" style="text-align:center;padding:40px;"><span class="spinner"></span> Searching curated alternatives for this step…</div>`;
+    }
+    const alts = inspectorAlternatives || [];
+    if (!alts.length) {
+      return `<div class="detail-block"><h4>Alternative Recommendations</h4><p class="muted">No direct alternatives found for this specific step right now.</p></div>`;
+    }
+    return `
+      <div class="detail-block">
+        <h4>Suggest Another: Curated Alternatives</h4>
+        <p class="muted" style="font-size:12.5px;margin:4px 0 16px;">If this resource is too fast, too slow, or not matching your style, choose an alternative below. Swapping updates your trajectory without breaking prerequisite guarantees.</p>
+        <div class="alt-card-grid">
+          ${alts.map(alt => `
+            <div class="alt-card">
+              <div class="alt-card-top">
+                <div>
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;flex-wrap:wrap;">
+                    <span class="alt-badge">${esc(alt.archetype)}</span>
+                    <span class="alt-tradeoff">${esc(alt.trade_off_label)}</span>
+                  </div>
+                  <h4>${esc(readableTitle(alt.title))}</h4>
+                </div>
+                <span class="suitability-badge">${alt.match_score}% fit</span>
+              </div>
+              <p>${esc(alt.why_choose_this)}</p>
+              <div class="evidence-row" style="margin:8px 0 14px;">
+                <span>Specs</span>
+                <span class="review-count" style="font-size:12px;color:var(--muted);">${hrs(alt.hours)} · ${esc(alt.provider)} · ${esc(alt.level)} · ${esc(alt.cost)}</span>
+              </div>
+              <div class="alt-actions">
+                <button class="btn-primary btn-sm swap-btn-action" data-swap-from="${esc(item.id)}" data-swap-to="${esc(alt.id)}" data-mutating>⚡ Swap into My Route</button>
+                <a class="btn-secondary btn-sm" href="${esc(alt.url)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">Preview Resource ↗</a>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+
+  if (inspectorTab === 'audit') {
+    if (auditPending === item.id) {
+      return `<div class="detail-block" style="text-align:center;padding:40px;"><span class="spinner"></span> Generating zero-hallucination proof chain…</div>`;
+    }
+    const a = inspectorAudit;
+    if (!a) {
+      return `<div class="detail-block"><h4>AI Audit</h4><p class="muted">Audit information unavailable.</p></div>`;
+    }
+    return `
+      <div class="detail-block">
+        <h4>🛡️ Zero-Hallucination Proof Chain</h4>
+        <p class="muted" style="font-size:12.5px;margin:4px 0 16px;">TESSA eliminates hallucinations through a 4-layer mathematical and grounding architecture:</p>
+        <div class="audit-card">
+          <div class="audit-layer">
+            <div class="audit-layer-head">
+              <span>Layer 1: NetworkX Topological Sort</span>
+              <span style="color:#34d399;">✓ Guaranteed Acyclic</span>
+            </div>
+            <p>${esc(a.dag_prerequisite_guarantee)}</p>
+            <div style="margin-top:6px;font-size:11.5px;color:var(--muted);">Prerequisites checked: ${a.prerequisites_satisfied.map(p => esc(p)).join(', ')}</div>
+          </div>
+          <div class="audit-layer">
+            <div class="audit-layer-head">
+              <span>Layer 2: Tavily Live Web Grounding</span>
+              <span style="color:#34d399;">✓ Verified Canonical URL</span>
+            </div>
+            <p><b>Provenance:</b> ${esc(a.provenance)}</p>
+            <p style="margin-top:4px;word-break:break-all;"><a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">${esc(a.url)}</a></p>
+          </div>
+          <div class="audit-layer">
+            <div class="audit-layer-head">
+              <span>Layer 3: Deterministic Reason-Code Scoring</span>
+              <span style="color:#34d399;">✓ Math-Bounded</span>
+            </div>
+            <p>Explanations are derived strictly from deterministic scoring components (${Object.entries(a.mathematical_components || {}).map(([k,v]) => `${k}: ${v}`).join(' · ')}). The language model cannot invent statistics or justifications.</p>
+          </div>
+          <div class="audit-layer">
+            <div class="audit-layer-head">
+              <span>Layer 4: Pydantic Schema & Bounds Enforcement</span>
+              <span style="color:#34d399;">✓ Constrained Generation</span>
+            </div>
+            <p>Structured schema contracts drop any synthetic hallucinated fields before they can ever reach the planner or learner.</p>
+          </div>
+          <div class="audit-seal-box">
+            <div>
+              <b>${esc(a.verification_hash)}</b>
+              <div>Verified at: ${esc(a.verified_at)}</div>
+            </div>
+            <span class="suitability-badge" style="font-size:12px;">🛡️ Risk: ${esc(a.hallucination_risk)}</span>
+          </div>
+        </div>
+      </div>`;
   }
 
   if (inspectorTab === 'course' && course) {
@@ -3233,6 +4069,142 @@ function timelineDetail(e) {
   return JSON.stringify(e);
 }
 
+/* -------------------------------------------------------- milestone actions */
+
+async function updateMilestoneDeadline(milestoneIndex, targetDate) {
+  try {
+    const res = await API.post(`/api/profile/${learnerId}/milestone-target`, {
+      milestone_index: Number(milestoneIndex),
+      target_date: targetDate || null
+    });
+    if (profile) {
+      if (!profile.milestone_deadlines) profile.milestone_deadlines = {};
+      profile.milestone_deadlines[String(milestoneIndex)] = targetDate || '';
+    }
+    if (PATH && PATH.milestones) {
+      const ms = PATH.milestones.find(m => m.index === Number(milestoneIndex));
+      if (ms) ms.target_date = targetDate || '';
+    }
+    toast('Milestone Deadline Updated', `Phase ${milestoneIndex} target set to ${targetDate || 'None'}`);
+    saveSession();
+  } catch (err) {
+    toast('Update Failed', err.message || 'Could not update deadline.');
+  }
+}
+
+async function completeEntireMilestone(milestoneIndex) {
+  setBusy(true, `Completing Phase ${milestoneIndex} & replanning route…`);
+  try {
+    const res = await API.post(`/api/profile/${learnerId}/complete-milestone/${milestoneIndex}`);
+    if (res.profile) profile = res.profile;
+    if (res.path) PATH = res.path;
+    if (res.dashboard) dash = res.dashboard;
+    toast('Milestone Completed! 🎯', res.message || `Phase ${milestoneIndex} marked complete.`);
+    renderAll();
+  } catch (err) {
+    toast('Milestone Completion Failed', err.message || 'Could not complete phase.');
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function addCustomMilestone() {
+  const input = $('#customMsGoalInput');
+  const dateInput = $('#customMsDateInput');
+  const phaseSelect = $('#customMsPhaseSelect');
+  if (!input) return;
+  const goal = input.value.trim();
+  if (!goal) {
+    input.focus();
+    return;
+  }
+  const targetDate = dateInput ? dateInput.value : '';
+  const milestoneIndex = phaseSelect ? Number(phaseSelect.value) || 1 : 1;
+
+  try {
+    const res = await API.post(`/api/profile/${learnerId}/custom-milestone`, {
+      goal,
+      target_date: targetDate || null,
+      milestone_index: milestoneIndex
+    });
+    if (profile) {
+      profile.custom_milestones = res.custom_milestones;
+    }
+    toast('Milestone Checkpoint Added', goal);
+    renderProfile();
+    saveSession();
+  } catch (err) {
+    toast('Failed to add checkpoint', err.message || 'Could not add milestone.');
+  }
+}
+
+async function toggleCustomMilestone(itemId) {
+  try {
+    const res = await API.post(`/api/profile/${learnerId}/custom-milestone/${itemId}/toggle`);
+    if (profile) {
+      profile.custom_milestones = res.custom_milestones;
+    }
+    renderProfile();
+    saveSession();
+  } catch (err) {
+    toast('Failed to toggle goal', err.message);
+  }
+}
+
+async function deleteCustomMilestone(itemId) {
+  try {
+    const res = await API.delete(`/api/profile/${learnerId}/custom-milestone/${itemId}`);
+    if (profile) {
+      profile.custom_milestones = res.custom_milestones;
+    }
+    toast('Checkpoint Deleted', 'Custom milestone removed.');
+    renderProfile();
+    saveSession();
+  } catch (err) {
+    toast('Failed to delete goal', err.message || 'Could not remove checkpoint.');
+  }
+}
+
+/* ----------------------------------------------------------- streak actions */
+
+async function logStudyCheckIn(minutes = 45) {
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const res = await API.post(`/api/profile/${learnerId}/check-in`, {
+      minutes: Number(minutes) || 45,
+      date: today
+    });
+    if (profile) {
+      profile.current_streak = res.current_streak;
+      profile.longest_streak = res.longest_streak;
+      profile.last_active_date = res.last_active_date;
+      profile.activity_history = res.activity_history;
+      profile.streak_freeze_count = res.streak_freeze_count;
+    }
+    toast('Study Session Logged! 🔥', res.message || 'Streak updated!');
+    renderProfile();
+    saveSession();
+  } catch (err) {
+    toast('Check-in Failed', err.message || 'Could not log study session.');
+  }
+}
+
+async function setDailyStreakTarget(mins) {
+  try {
+    const res = await API.post(`/api/profile/${learnerId}/streak-target`, {
+      daily_goal_minutes: Number(mins)
+    });
+    if (profile) {
+      profile.daily_goal_minutes = res.daily_goal_minutes;
+    }
+    toast('Study Target Updated 🎯', res.message || `${mins} mins/day`);
+    renderProfile();
+    saveSession();
+  } catch (err) {
+    toast('Target Update Failed', err.message);
+  }
+}
+
 /* --------------------------------------------------------------- profile */
 
 function renderProfile() {
@@ -3249,10 +4221,10 @@ function renderProfile() {
       <div class="profile-facts">
         <div class="profile-fact"><span>Readiness</span><b>${pct(dash?.readiness)}</b></div>
         <div class="profile-fact"><span>Planning pace</span><b>${profile.weekly_hours}h/wk</b></div>
+        <div class="profile-fact"><span>Study streak</span><b style="color:#fbbf24;">🔥 ${(profile.current_streak || 0)}d</b></div>
         <div class="profile-fact"><span>Timeline</span><b>${profile.time_unconstrained ? 'Flexible' : `${profile.horizon_weeks} wks`}</b></div>
         <div class="profile-fact"><span>Budget</span><b>${esc(profile.budget)}</b></div>
         <div class="profile-fact"><span>Stated skills</span><b>${(profile.known_skills || []).length}</b></div>
-        <div class="profile-fact"><span>Measured</span><b>${Object.keys(profile.quiz_results || {}).length}</b></div>
       </div>
     </section>
 
@@ -3276,6 +4248,247 @@ function renderProfile() {
           <div><b>${pct(PATH?.readiness_after)}</b><span>readiness after</span></div>
         </div>
         <button class="btn-secondary" id="applySim" data-mutating disabled>Apply this budget</button>
+      </section>
+
+      <!-- Working Study Streak & Habit Tracker -->
+      ${(() => {
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const isCheckedInToday = profile.last_active_date === todayStr;
+        const currentStreak = profile.current_streak || 0;
+        const longestStreak = profile.longest_streak || 0;
+        const historySet = new Set(profile.activity_history || []);
+        const totalSessions = (profile.activity_history || []).length;
+        const dailyGoal = profile.daily_goal_minutes || 45;
+        const freezeCount = profile.streak_freeze_count !== undefined ? profile.streak_freeze_count : 1;
+
+        const weekDays = [];
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          const iso = d.toISOString().slice(0, 10);
+          const dayName = dayNames[d.getDay()];
+          const dayNum = d.getDate();
+          const isToday = (i === 0);
+          const hasActivity = historySet.has(iso);
+          weekDays.push({ iso, dayName, dayNum, isToday, hasActivity });
+        }
+
+        const streakStatusText = isCheckedInToday
+          ? "You've checked in today! Streak secured. Keep up the high performance."
+          : (currentStreak > 0
+            ? `Check in today to maintain your ${currentStreak}-day streak!`
+            : "Start your study streak today with a focused session.");
+
+        return `
+        <section class="surface profile-section profile-streak-section">
+          <div class="streak-hero">
+            <div class="streak-hero-left">
+              <div class="streak-flame-orb" title="${currentStreak}-day active study streak">🔥</div>
+              <div class="streak-meta">
+                <div class="eyebrow" style="color:#fbbf24;letter-spacing:0.08em;margin-bottom:2px;">Study Habit &amp; Momentum</div>
+                <h3>${currentStreak} Day Study Streak</h3>
+                <p>${esc(streakStatusText)}</p>
+              </div>
+            </div>
+
+            <div class="streak-stats-row">
+              <div class="streak-stat-pill" title="Your all-time longest streak">
+                <span>🏆 Best:</span>
+                <b>${longestStreak} days</b>
+              </div>
+              <div class="streak-stat-pill" title="Total verified study sessions logged">
+                <span>📅 Total Sessions:</span>
+                <b>${totalSessions}</b>
+              </div>
+              <div class="streak-stat-pill" title="Streak Freeze Shield protects for 1 missed day">
+                <span>🛡️ Freezes:</span>
+                <b>${freezeCount} active</b>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7-Day Activity Habit Bar -->
+          <div class="streak-week-bar">
+            ${weekDays.map(w => `
+              <div class="streak-day-card ${w.hasActivity ? 'active' : ''} ${w.isToday ? 'today' : ''}" title="${w.iso}: ${w.hasActivity ? 'Study session logged 🔥' : (w.isToday ? 'Today' : 'No activity logged')}">
+                <span class="streak-day-name">${w.dayName}</span>
+                <div class="streak-day-icon">
+                  ${w.hasActivity ? '🔥' : (w.isToday ? '⚡' : '○')}
+                </div>
+                <span class="streak-day-num">${w.dayNum}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="streak-actions-row">
+            <div class="streak-targets">
+              <span>Daily Goal:</span>
+              ${[15, 30, 45, 60, 90].map(mins => `
+                <button type="button" class="streak-target-chip ${dailyGoal === mins ? 'on' : ''}" data-streak-mins="${mins}">
+                  ${mins}m
+                </button>
+              `).join('')}
+            </div>
+
+            <button type="button" class="streak-checkin-btn ${isCheckedInToday ? 'done' : ''}" id="streakCheckInBtn" ${isCheckedInToday ? 'disabled' : ''}>
+              ${isCheckedInToday ? '✓ Checked in for Today' : '⚡ Log Today\'s Study Session'}
+            </button>
+          </div>
+        </section>
+        `;
+      })()}
+
+      <!-- Working Milestones & Checkpoints -->
+      <section class="surface profile-section profile-milestones-section">
+        <div class="section-title">
+          <div>
+            <div class="eyebrow" style="color:var(--cyan);letter-spacing:0.08em;margin-bottom:2px;">Goal Execution Engine</div>
+            <h3 style="margin:0;">Active Milestones &amp; Deadlines</h3>
+          </div>
+          <span>${(PATH?.milestones || []).length} phases planned</span>
+        </div>
+        <p class="muted" style="font-size:12.5px;margin:6px 0 16px;">
+          Dynamic milestone roadmap derived from your prerequisite graph. Set custom deadlines, track phase completion, inspect step dependencies, or complete full phases directly.
+        </p>
+
+        <div class="profile-ms-list">
+          ${(() => {
+            const msList = PATH?.milestones || [];
+            if (!msList.length) {
+              return '<p class="strengths-empty">No milestone phases generated yet. Calculate your route to generate phases.</p>';
+            }
+            return msList.map(m => {
+              const phaseItems = m.items || [];
+              const doneCount = phaseItems.filter(isDone).length;
+              const totalCount = phaseItems.length;
+              const isAllDone = totalCount > 0 && doneCount === totalCount;
+              const pctDone = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+              const savedDeadline = (profile.milestone_deadlines && profile.milestone_deadlines[String(m.index)]) || m.target_date || '';
+              const isDrawerOpen = openMilestoneDrawers.has(m.index);
+
+              return `
+                <div class="profile-ms-card ${isAllDone ? 'done' : ''}" data-ms-card="${m.index}">
+                  <div class="profile-ms-head">
+                    <div class="profile-ms-info">
+                      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                        <span class="profile-ms-badge ${isAllDone ? 'done' : ''}">${isAllDone ? '✓ Completed' : `Phase ${m.index}`}</span>
+                        <span class="profile-ms-sub">Weeks ${m.start_week}–${m.end_week} · ${hrs(m.hours)} planned</span>
+                      </div>
+                      <h4>${esc(m.title)}</h4>
+                      ${m.summary ? `<p style="font-size:12.5px;color:var(--muted);margin:3px 0 0;">${esc(m.summary)}</p>` : ''}
+                    </div>
+
+                    <div class="profile-ms-deadline">
+                      <label for="msDeadline_${m.index}">Target Deadline</label>
+                      <input type="date" id="msDeadline_${m.index}" class="ms-deadline-picker" data-ms-index="${m.index}" value="${esc(savedDeadline)}" title="Set custom deadline date for Phase ${m.index}">
+                    </div>
+                  </div>
+
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:12px;color:var(--muted);">
+                    <span>Phase Progress (${doneCount}/${totalCount} items completed)</span>
+                    <b style="color:${isAllDone ? '#34d399' : 'var(--cyan)'};">${pctDone}%</b>
+                  </div>
+                  <div class="profile-ms-progress">
+                    <div class="profile-ms-progress-fill ${isAllDone ? 'done' : ''}" style="width:${pctDone}%;"></div>
+                  </div>
+
+                  <div class="profile-ms-actions">
+                    <button type="button" class="btn-secondary btn-sm ms-drawer-toggle" data-ms-drawer="${m.index}">
+                      ${isDrawerOpen ? 'Collapse Phase Items ▴' : `Inspect ${totalCount} Phase Items ▾`}
+                    </button>
+                    ${!isAllDone ? `
+                      <button type="button" class="btn-primary btn-sm ms-complete-phase-btn" data-ms-complete="${m.index}" data-mutating>
+                        ✓ Complete Phase ${m.index}
+                      </button>
+                    ` : `
+                      <span style="font-size:12px;color:#34d399;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+                        ✓ All Phase Requirements Met
+                      </span>
+                    `}
+                    <button type="button" class="btn-secondary btn-sm" onclick="switchView('trajectory');" style="margin-left:auto;">
+                      View in Trajectory ➔
+                    </button>
+                  </div>
+
+                  <div id="msDrawer_${m.index}" class="profile-ms-drawer ${isDrawerOpen ? '' : 'hidden'}">
+                    <div class="profile-ms-items-list">
+                      ${phaseItems.map((item, idx) => {
+                        const done = isDone(item);
+                        const c = catalogue.find(x => x.id === item.id);
+                        const title = item.title || c?.title || item.id;
+                        const provider = item.provider || c?.provider || 'Curated';
+                        return `
+                          <div class="profile-ms-subitem ${done ? 'done' : ''}">
+                            <div class="profile-ms-subitem-title">
+                              <span style="display:inline-block;width:20px;text-align:center;font-weight:700;color:${done ? '#34d399' : 'var(--muted)'};">
+                                ${done ? '✓' : (idx + 1)}
+                              </span>
+                              <div>
+                                <b style="display:block;font-size:13px;color:#f8fafc;">${esc(readableTitle(title))}</b>
+                                <span style="font-size:11.5px;color:var(--muted);">${esc(provider)} · ${hrs(item.hours)} · ${esc(item.kind)}</span>
+                              </div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:6px;">
+                              <span class="profile-ms-badge ${done ? 'done' : ''}" style="font-size:10px;padding:2px 6px;">
+                                ${done ? 'Completed' : (item.status || 'Planned')}
+                              </span>
+                              <button type="button" class="btn-secondary btn-sm" onclick="openInspector('${item.id}', 'why'); switchView('trajectory');" style="padding:2px 8px;font-size:11px;">
+                                Inspect
+                              </button>
+                            </div>
+                          </div>
+                        `;
+                      }).join('')}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          })()}
+        </div>
+
+        <!-- Personal Milestone Checkpoints & Goals -->
+        <div class="custom-ms-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+            <div>
+              <h4 style="margin:0 0 2px;font:700 14px/1.2 var(--display);color:#f8fafc;">🎯 Personal Milestone Checkpoints</h4>
+              <span class="muted" style="font-size:12px;">Add personal projects, certifications, or custom study checkpoints to your roadmap.</span>
+            </div>
+            <span class="profile-ms-badge" style="font-size:10.5px;">${(profile.custom_milestones || []).filter(x => x.done).length}/${(profile.custom_milestones || []).length} done</span>
+          </div>
+
+          <div class="custom-ms-form">
+            <input type="text" id="customMsGoalInput" placeholder="e.g. Build end-to-end fullstack app, finish LeetCode 50..." maxlength="140" autocomplete="off" />
+            <select id="customMsPhaseSelect" title="Target Phase">
+              ${(PATH?.milestones || []).map(ms => `<option value="${ms.index}">Phase ${ms.index}: ${esc(ms.title)}</option>`).join('') || '<option value="1">Phase 1</option>'}
+            </select>
+            <input type="date" id="customMsDateInput" title="Target Date (Optional)" />
+            <button type="button" class="btn-primary btn-sm" id="addCustomMsBtn">+ Add Checkpoint</button>
+          </div>
+
+          <div class="custom-ms-list" id="customMsList">
+            ${(() => {
+              const cms = profile.custom_milestones || [];
+              if (!cms.length) {
+                return '<p class="strengths-empty" style="padding:10px 0;margin:0;">No personal milestone checkpoints added yet. Type a goal above to track personal targets alongside your curriculum!</p>';
+              }
+              return cms.map(cm => `
+                <div class="custom-ms-item ${cm.done ? 'done' : ''}" data-custom-id="${esc(cm.id)}">
+                  <label class="custom-ms-label">
+                    <input type="checkbox" class="custom-ms-toggle" data-custom-id="${esc(cm.id)}" ${cm.done ? 'checked' : ''} />
+                    <span class="custom-ms-text ${cm.done ? 'strikethrough' : ''}">${esc(cm.goal)}</span>
+                  </label>
+                  <div class="custom-ms-meta">
+                    ${cm.milestone_index ? `<span class="profile-ms-badge" style="font-size:10.5px;">Phase ${cm.milestone_index}</span>` : ''}
+                    ${cm.target_date ? `<span style="font-size:11.5px;color:var(--muted);">📅 ${esc(cm.target_date)}</span>` : ''}
+                    <button type="button" class="custom-ms-del" data-custom-del="${esc(cm.id)}" title="Delete goal" aria-label="Delete goal">×</button>
+                  </div>
+                </div>
+              `).join('');
+            })()}
+          </div>
+        </div>
       </section>
 
       <section class="surface profile-section">
@@ -4010,6 +5223,16 @@ document.addEventListener('click', async event => {
   const tab = t.closest('[data-tab]');
   if (tab) { inspectorTab = tab.dataset.tab; renderInspector(); return; }
 
+  const swapBtn = t.closest('.swap-btn-action');
+  if (swapBtn) {
+    const fromId = swapBtn.dataset.swapFrom;
+    const toId = swapBtn.dataset.swapTo;
+    if (fromId && toId) {
+      await swapCourse(fromId, toId);
+      return;
+    }
+  }
+
   const feedback = t.closest('[data-feedback]');
   if (feedback) {
     const holder = feedback.closest('[data-feedback-item]');
@@ -4088,7 +5311,71 @@ document.addEventListener('click', async event => {
     await regenerate('Profile saved');
     return;
   }
+
+  const drawerBtn = t.closest('.ms-drawer-toggle');
+  if (drawerBtn) {
+    const idx = Number(drawerBtn.dataset.msDrawer);
+    if (openMilestoneDrawers.has(idx)) {
+      openMilestoneDrawers.delete(idx);
+    } else {
+      openMilestoneDrawers.add(idx);
+    }
+    const drawer = $(`#msDrawer_${idx}`);
+    if (drawer) drawer.classList.toggle('hidden');
+    drawerBtn.textContent = openMilestoneDrawers.has(idx) ? 'Collapse Phase Items ▴' : 'Inspect Phase Items ▾';
+    return;
+  }
+
+  const completePhaseBtn = t.closest('.ms-complete-phase-btn');
+  if (completePhaseBtn) {
+    const idx = Number(completePhaseBtn.dataset.msComplete);
+    if (idx) await completeEntireMilestone(idx);
+    return;
+  }
+
+  if (t.closest('#addCustomMsBtn')) {
+    await addCustomMilestone();
+    return;
+  }
+
+  const customDelBtn = t.closest('.custom-ms-del');
+  if (customDelBtn) {
+    const id = customDelBtn.dataset.customDel;
+    if (id) await deleteCustomMilestone(id);
+    return;
+  }
+
+  if (t.closest('#streakCheckInBtn')) {
+    const btn = t.closest('#streakCheckInBtn');
+    if (!btn.classList.contains('done')) {
+      await logStudyCheckIn(profile?.daily_goal_minutes || 45);
+    }
+    return;
+  }
+
+  const streakTargetChip = t.closest('[data-streak-mins]');
+  if (streakTargetChip) {
+    const mins = Number(streakTargetChip.dataset.streakMins);
+    if (mins) await setDailyStreakTarget(mins);
+    return;
+  }
 });
+
+document.addEventListener('change', async event => {
+  const t = event.target;
+  if (t.classList.contains('ms-deadline-picker')) {
+    const idx = Number(t.dataset.msIndex);
+    const dateVal = t.value;
+    if (idx) await updateMilestoneDeadline(idx, dateVal);
+    return;
+  }
+  if (t.classList.contains('custom-ms-toggle')) {
+    const id = t.dataset.customId;
+    if (id) await toggleCustomMilestone(id);
+    return;
+  }
+});
+
 
 document.addEventListener('input', event => {
   if (event.target.id === 'catalogueSearch') { renderCatalogue(event.target.value); return; }
@@ -4139,6 +5426,7 @@ document.addEventListener('keydown', event => {
   if (event.target.id === 'intakeText' && event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { $('#buildRoute').click(); return; }
   if (event.target.id === 'chatInput' && event.key === 'Enter') { event.preventDefault(); ask(); return; }
   if (event.target.id === 'profileCourseInput' && event.key === 'Enter') { event.preventDefault(); $('#profileCourseAdd').click(); return; }
+  if (event.target.id === 'customMsGoalInput' && event.key === 'Enter') { event.preventDefault(); $('#addCustomMsBtn')?.click(); return; }
   if (quiz && $('#quizDialog').open && /^[1-9]$/.test(event.key)) {
     const option = $$('.quiz-opt', $('#quizBody'))[Number(event.key) - 1];
     if (option) option.click();

@@ -1,28 +1,38 @@
 import copy
+import logging
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
+import networkx as nx
 
 try:
     from app import store
-    from app.engines import adapter, explainer, gap as gap_engine, planner
+    from app.engines import adapter, explainer, gap as gap_engine, planner, suitability
     from app.engines.profiler import mastery
-    from app.schemas import Feedback, LearningPath, Recommendation
+    from app.schemas import Course, Feedback, LearningPath, Recommendation
     from app.api.deps import apply_completed_status, build_path, goal_session, learner_path
     from app.api.workspace import snapshot
 except ImportError:
     from .. import store
-    from ..engines import adapter, explainer, gap as gap_engine, planner
+    from ..engines import adapter, explainer, gap as gap_engine, planner, suitability
     from ..engines.profiler import mastery
-    from ..schemas import Feedback, LearningPath, Recommendation
+    from ..schemas import Course, Feedback, LearningPath, Recommendation
     from .deps import apply_completed_status, build_path, goal_session, learner_path
     from .workspace import snapshot
+
+log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api", tags=["path"])
 
 
 class GenerateRequest(BaseModel):
     role_id: str | None = None
+
+
+class SwapRequest(BaseModel):
+    current_course_id: str
+    replacement_course_id: str
+    replacement_course_data: dict | None = None
 
 
 @router.post("/path/{learner_id}/generate")
@@ -213,3 +223,185 @@ def recommendations(learner_id: str, q: str = "", limit: int = Query(10, ge=1, l
         }
         for r in recs
     ]
+
+
+@router.get("/path/{learner_id}/suitability/{course_id}")
+def get_suitability(learner_id: str, course_id: str):
+    """Multi-dimensional pedagogical suitability evaluation.
+    Evaluates gap fit, pacing, prerequisite status, and practical balance,
+    completely independent of view counts or SEO popularity."""
+    active = goal_session(learner_id)
+    cat = active.catalog
+    profile = store.get_profile(learner_id)
+    course = cat.course_by_id.get(course_id)
+    if not course:
+        # Also check path milestones
+        path = store.get_path(learner_id)
+        if path:
+            course = next((i.course for ms in path.milestones for i in ms.items if i.course and i.course.id == course_id), None)
+    if not course:
+        raise HTTPException(404, f"Course {course_id} not found.")
+    report = suitability.analyze_suitability(course, profile, cat)
+    return report.model_dump()
+
+
+@router.get("/path/{learner_id}/alternatives/{course_id}")
+def get_alternatives(learner_id: str, course_id: str, limit: int = Query(4, ge=1, le=10)):
+    """'If not this, suggest another'.
+    Returns categorized alternative resources (Faster crash course, Hands-on project,
+    Text/Docs reference, Deep dive) that teach the exact same skill gap."""
+    active = goal_session(learner_id)
+    cat = active.catalog
+    profile = store.get_profile(learner_id)
+    course = cat.course_by_id.get(course_id)
+    if not course:
+        path = store.get_path(learner_id)
+        if path:
+            course = next((i.course for ms in path.milestones for i in ms.items if i.course and i.course.id == course_id), None)
+            if course:
+                cat.course_by_id[course.id] = course
+    if not course:
+        raise HTTPException(404, f"Course {course_id} not found.")
+    alts = suitability.find_alternatives(course_id, profile, cat, max_results=limit)
+    return [alt.model_dump() for alt in alts]
+
+
+@router.get("/path/{learner_id}/audit/{course_id}")
+def get_audit(learner_id: str, course_id: str):
+    """The 4-layer anti-hallucination verification audit.
+    Exposes verifiable NetworkX topological sorting, Tavily web grounding,
+    deterministic reason codes, and bounded Pydantic schemas."""
+    active = goal_session(learner_id)
+    cat = active.catalog
+    profile = store.get_profile(learner_id)
+    path = store.get_path(learner_id) or learner_path(learner_id, active, profile)
+    course = cat.course_by_id.get(course_id)
+    if not course and path:
+        course = next((i.course for ms in path.milestones for i in ms.items if i.course and i.course.id == course_id), None)
+        if course:
+            cat.course_by_id[course.id] = course
+    if not course:
+        raise HTTPException(404, f"Course {course_id} not found.")
+    report = suitability.generate_audit_trail(course_id, profile, cat, path)
+    return report.model_dump()
+
+
+@router.post("/path/{learner_id}/swap")
+def swap_resource(learner_id: str, req: SwapRequest):
+    """Swap an item in the trajectory with an alternative recommendation.
+    Verifies that the NetworkX DAG remains acyclic with zero prerequisite inversions,
+    recalculates milestone schedules, and returns the updated workspace."""
+    active = goal_session(learner_id)
+    cat = active.catalog
+    profile = store.get_profile(learner_id)
+    path = store.get_path(learner_id) or learner_path(learner_id, active, profile)
+    if not path:
+        raise HTTPException(404, "No learning path exists for this learner.")
+
+    # Locate current item in path milestones
+    target_ms = None
+    target_item = None
+    for ms in path.milestones:
+        for item in ms.items:
+            if item.id == req.current_course_id or (item.course and item.course.id == req.current_course_id):
+                target_ms = ms
+                target_item = item
+                break
+        if target_item:
+            break
+
+    if not target_item or not target_item.course:
+        raise HTTPException(404, f"Course {req.current_course_id} is not in the active trajectory.")
+
+    # Resolve replacement course
+    replacement = cat.course_by_id.get(req.replacement_course_id)
+    if not replacement and req.replacement_course_data:
+        try:
+            replacement = Course(**req.replacement_course_data)
+            cat.courses.append(replacement)
+            cat.course_by_id[replacement.id] = replacement
+        except Exception as exc:
+            log.warning("Failed to parse replacement_course_data: %s", exc)
+
+    if not replacement:
+        # Search among generated alternatives
+        alts = suitability.find_alternatives(req.current_course_id, profile, cat, max_results=8)
+        match_alt = next((a for a in alts if a.id == req.replacement_course_id), None)
+        if match_alt:
+            replacement = Course(
+                id=match_alt.id,
+                title=match_alt.title,
+                provider=match_alt.provider,
+                url=match_alt.url,
+                description=match_alt.why_choose_this,
+                level=match_alt.level, # type: ignore
+                hours=match_alt.hours,
+                hours_stated=True,
+                cost=match_alt.cost, # type: ignore
+                format=match_alt.format, # type: ignore
+                teaches=target_item.course.teaches,
+                requires=target_item.course.requires,
+            )
+            cat.courses.append(replacement)
+            cat.course_by_id[replacement.id] = replacement
+
+    if not replacement:
+        raise HTTPException(404, f"Alternative course {req.replacement_course_id} could not be resolved.")
+
+    # NetworkX DAG Cycle & Prerequisite Check
+    G = nx.DiGraph()
+    all_courses: list[Course] = []
+    for ms in path.milestones:
+        for item in ms.items:
+            if item.course:
+                if item.id == target_item.id:
+                    all_courses.append(replacement)
+                else:
+                    all_courses.append(item.course)
+
+    for c in all_courses:
+        G.add_node(c.id)
+    for c1 in all_courses:
+        for c2 in all_courses:
+            if c1.id != c2.id and any(sid in c1.teaches for sid in c2.requires):
+                G.add_edge(c1.id, c2.id)
+
+    if not nx.is_directed_acyclic_graph(G):
+        raise HTTPException(422, "Cannot swap: this replacement would introduce a cyclic prerequisite dependency.")
+
+    # Perform in-place swap
+    old_title = target_item.title
+    target_item.id = replacement.id
+    target_item.title = replacement.title
+    target_item.hours = replacement.hours
+    target_item.course = replacement
+    target_item.description = replacement.description
+
+    # Recalculate milestone & path durations
+    for ms in path.milestones:
+        ms.hours = round(sum(i.hours for i in ms.items), 1)
+    path.total_hours = round(sum(ms.hours for ms in path.milestones), 1)
+
+    # Recalculate schedule timeline
+    weekly = max(profile.weekly_hours, 1.0)
+    curr_week = 1
+    for ms in path.milestones:
+        ms.start_week = curr_week
+        span = max(1, round(ms.hours / weekly))
+        ms.end_week = curr_week + span - 1
+        curr_week = ms.end_week + 1
+    path.total_weeks = max(1, curr_week - 1)
+
+    # Persist and log
+    store.save_path(path)
+    store.log_event(
+        learner_id,
+        "course_swapped",
+        {"from_id": req.current_course_id, "to_id": replacement.id, "to_title": replacement.title},
+    )
+
+    return {
+        "message": f"Successfully swapped: replaced '{old_title}' with '{replacement.title}'",
+        "swapped_to_id": replacement.id,
+        **snapshot(learner_id, active=active, profile=profile, path=path),
+    }

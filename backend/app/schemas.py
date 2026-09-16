@@ -110,6 +110,16 @@ class LearnerProfile(BaseModel):
     rejected_courses: list[str] = Field(default_factory=list)
     # learned online from feedback, see engines/adapter.py
     weight_overrides: dict[str, float] = Field(default_factory=dict)
+    # interactive milestone feature fields
+    custom_milestones: list[dict] = Field(default_factory=list)
+    milestone_deadlines: dict[str, str] = Field(default_factory=dict)
+    # working streak and study habit tracking fields
+    current_streak: int = 0
+    longest_streak: int = 0
+    last_active_date: str = ""
+    activity_history: list[str] = Field(default_factory=list)
+    daily_goal_minutes: int = 45
+    streak_freeze_count: int = 1
 
 
 class ProfileDraft(BaseModel):
