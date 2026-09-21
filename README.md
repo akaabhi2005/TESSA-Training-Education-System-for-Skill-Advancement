@@ -215,102 +215,109 @@ JSON / process-local prototype state
 Browser-managed learner profile state
 
 
-Project Blueprint
+## Project Blueprint
 
-                           ┌──────────────────────────────┐
-                           │          USER / LEARNER      │
-                           │ Goal • Skills • Time • Level │
-                           └──────────────┬───────────────┘
-                                          │
-                                          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     1. USER INTAKE LAYER                        │
-│                                                                 │
-│  Profile → Career Goal → Existing Skills → Time → Budget        │
-│  → Preferred Learning Style                                    │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                  2. AI GOAL UNDERSTANDING                       │
-│                                                                 │
-│                     Gemini / LLM Engine                         │
-│                              │                                  │
-│          Goal Parsing → Skill Extraction → Classification       │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    3. SKILL GRAPH ENGINE                        │
-│                                                                 │
-│                     Skill A ─────► Skill B                       │
-│                         │             │                          │
-│                         ▼             ▼                          │
-│                     Skill C ─────► Skill D                       │
-│                                                                 │
-│   DAG + Prerequisites + Dependency Validation + Topological     │
-│                         Ordering                                │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                   4. DIAGNOSTIC ENGINE                          │
-│                                                                 │
-│     Questions → User Answers → Existing Knowledge Detection     │
-│                             │                                   │
-│                     Mastery Score                               │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                 5. ADAPTIVE ROADMAP ENGINE                      │
-│                                                                 │
-│  Skill Graph + Diagnostic + Available Time + Constraints        │
-│                              ↓                                  │
-│                  Personalized Learning Path                     │
-│                                                                 │
-│  Week 1 → Week 2 → Week 3 → Projects → Assessment              │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-              ┌────────────────┴─────────────────┐
-              ▼                                  ▼
-┌─────────────────────────┐        ┌──────────────────────────────┐
-│ 6. RESOURCE DISCOVERY   │        │ 7. LEARNING WORKSPACE       │
-│                         │        │                              │
-│ Tavily / Live Web       │        │ Tasks                       │
-│ Search                  │        │ Notes                       │
-│        ↓                │        │ Progress                    │
-│ Courses                 │        │ Assessments                 │
-│ Videos                  │        │ Current Skill               │
-│ Docs                    │        │ Learning Streak             │
-│ Articles                │        │ Completion                  │
-│ Practice Problems       │        │                              │
-│        ↓                │        └──────────────┬───────────────┘
-│ BM25 / TF-IDF Ranking   │                       │
-└────────────┬────────────┘                       │
-             └─────────────────┬──────────────────┘
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                   8. MASTERY TRACKING                           │
-│                                                                 │
-│   Quiz + Task + Project + Activity → Mastery Evaluation         │
-│                              │                                  │
-│                    Skill Status Updated                         │
-│                 Not Started / Learning / Mastered               │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ ROADMAP ADAPTATION  │
-                    │                     │
-                    │ Weak Skill Found?   │
-                    │ New Goal?           │
-                    │ Skill Mastered?     │
-                    │ Resource Outdated?  │
-                    └──────────┬──────────┘
-                               │
-                               └──────────────► Roadmap Engine
-
+```text
+                         ┌──────────────────────────────┐
+                         │        USER / LEARNER        │
+                         │ Goal • Skills • Time • Level │
+                         └──────────────┬───────────────┘
+                                        │
+                                        ▼
+┌───────────────────────────────────────────────────────┐
+│                 1. USER INTAKE LAYER                  │
+│                                                       │
+│ Profile → Career Goal → Existing Skills → Time        │
+│ Budget → Preferred Learning Style                     │
+└──────────────────────────┬────────────────────────────┘
+                           │
+                           ▼
+┌───────────────────────────────────────────────────────┐
+│              2. AI GOAL UNDERSTANDING                 │
+│                                                       │
+│                 Gemini / LLM Engine                   │
+│                                                       │
+│ Goal Parsing → Skill Extraction → Classification      │
+└──────────────────────────┬────────────────────────────┘
+                           │
+                           ▼
+┌───────────────────────────────────────────────────────┐
+│                3. SKILL GRAPH ENGINE                  │
+│                                                       │
+│ Skill A ─────► Skill B                                │
+│    │              │                                   │
+│    ▼              ▼                                   │
+│ Skill C ─────► Skill D                                │
+│                                                       │
+│ DAG • Prerequisites • Dependency Validation           │
+│ Topological Ordering                                  │
+└──────────────────────────┬────────────────────────────┘
+                           │
+                           ▼
+┌───────────────────────────────────────────────────────┐
+│                 4. DIAGNOSTIC ENGINE                  │
+│                                                       │
+│ Questions → User Answers → Knowledge Detection        │
+│                       │                               │
+│                       ▼                               │
+│                 Mastery Score                         │
+└──────────────────────────┬────────────────────────────┘
+                           │
+                           ▼
+┌───────────────────────────────────────────────────────┐
+│              5. ADAPTIVE ROADMAP ENGINE               │
+│                                                       │
+│ Skill Graph + Diagnostic + Time + Constraints         │
+│                       │                               │
+│                       ▼                               │
+│            Personalized Learning Path                 │
+│                                                       │
+│ Week 1 → Week 2 → Week 3 → Project → Assessment      │
+└──────────────────────────┬────────────────────────────┘
+                           │
+               ┌───────────┴───────────┐
+               │                       │
+               ▼                       ▼
+┌───────────────────────────┐   ┌───────────────────────┐
+│  6. RESOURCE DISCOVERY    │   │ 7. LEARNING WORKSPACE │
+│                           │   │                       │
+│ Tavily / Live Web Search  │   │ Tasks                 │
+│          │                │   │ Notes                 │
+│          ▼                │   │ Progress              │
+│ Courses • Videos • Docs   │   │ Assessments           │
+│ Practice Problems         │   │ Current Skill         │
+│          │                │   │ Completion            │
+│          ▼                │   │                       │
+│ BM25 / TF-IDF Ranking     │   └───────────┬───────────┘
+└─────────────┬─────────────┘               │
+              └───────────────┬─────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────┐
+│                8. MASTERY TRACKING                    │
+│                                                       │
+│ Quiz + Task + Project + Activity                      │
+│                       │                               │
+│                       ▼                               │
+│              Mastery Evaluation                       │
+│                       │                               │
+│                       ▼                               │
+│ Not Started • Learning • Mastered                     │
+└──────────────────────────┬────────────────────────────┘
+                           │
+                           ▼
+                ┌────────────────────────┐
+                │   ROADMAP ADAPTATION   │
+                │                        │
+                │ Weak Skill Found?      │
+                │ New Goal?              │
+                │ Skill Mastered?        │
+                │ Resource Outdated?     │
+                └───────────┬────────────┘
+                            │
+                            └──────► Roadmap Engine
+```
+                  
 
 🎯 What Makes TESSA Different?
 
